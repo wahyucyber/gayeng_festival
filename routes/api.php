@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,15 @@ Route::group([
     Route::post("/login", [AuthController::class, "login"]);
     Route::get("/show", [AuthController::class, "show"])->middleware(["auth:sanctum"]);
     Route::delete("/logout", [AuthController::class, "logout"])->middleware(["auth:sanctum"]);
+});
+
+Route::group([
+    "prefix" => "admin",
+    "middleware" => ["auth:sanctum", "abilities:admin"]
+], function() {
+    Route::group([
+        "prefix" => "event"
+    ], function() {
+        Route::get("/", [EventController::class, "index"]);
+    });
 });
