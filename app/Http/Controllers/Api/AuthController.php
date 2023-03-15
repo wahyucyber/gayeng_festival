@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
@@ -47,5 +48,23 @@ class AuthController extends Controller
                 ]
             ], 400);
         }
+    }
+
+    public function show()
+    {
+        $user = User::where("id", Auth::id())->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->first();
+
+        if ($user == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "User not found.",
+            ], 404);
+        }
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => $user
+        ], 200);
     }
 }
