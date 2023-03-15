@@ -27,7 +27,7 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $user = User::where("email", $request->email)->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->first();
+        $user = User::where("email", $request->email)->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->with("level")->first();
 
         if (Hash::check($request->password, $user["password"])) {
             $laravel_sanctum = $user->createToken("authorization", ["admin"]);
@@ -52,7 +52,7 @@ class AuthController extends Controller
 
     public function show()
     {
-        $user = User::where("id", Auth::id())->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->first();
+        $user = User::where("id", Auth::id())->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->with("level")->first();
 
         if ($user == null) {
             return Response::json([
