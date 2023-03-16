@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId("level_id");
             $table->string("picture")->nullable();
             $table->string('name');
+            $table->string('nik')->comment("NIK or Kartu Pelajar")->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string("address")->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
