@@ -30,7 +30,7 @@ class AuthController extends Controller
         $user = User::where("email", $request->email)->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->with("level")->first();
 
         if (Hash::check($request->password, $user["password"])) {
-            $laravel_sanctum = $user->createToken("authorization", ["admin"]);
+            $laravel_sanctum = $user->createToken("authorization", [$user["level"]["name"]]);
 
             return Response::json([
                 "status" => true,

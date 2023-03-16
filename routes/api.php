@@ -26,7 +26,7 @@ Route::group([
 
 Route::group([
     "prefix" => "admin",
-    "middleware" => ["auth:sanctum", "abilities:admin"]
+    "middleware" => ["auth:sanctum", "abilities:Admin"]
 ], function() {
     Route::group([
         "prefix" => "event"
