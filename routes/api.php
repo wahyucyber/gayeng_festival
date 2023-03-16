@@ -33,6 +33,13 @@ Route::group([
 });
 
 Route::group([
+    "prefix" => "news"
+], function() {
+    Route::get("/", [NewsController::class, "index"]);
+    Route::get("/{slug}/show", [NewsController::class, "show"]);
+});
+
+Route::group([
     "prefix" => "admin",
     "middleware" => ["auth:sanctum", "abilities:Admin"]
 ], function() {
