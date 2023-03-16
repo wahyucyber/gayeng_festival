@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Level;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +50,46 @@ class AuthController extends Controller
                 ]
             ], 400);
         }
+    }
+
+    public function register(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            "picture" => "nullable|max:2048|image|mimes:png,jpg,jpeg",
+            "name" => "required|max:255",
+            "nik" => "required|max:255",
+            "whatsapp" => "required|max:15",
+            "address" => "required|max:255",
+            "email" => "required|max:255|unique:users,email",
+            "password" => "required|max:50|confirmed"
+        ]);
+
+        if ($validation->fails()) {
+            return Response::json([
+                "status" => false,
+                "message" => $validation->errors()
+            ], 400);
+        }
+
+        $level_id = Level::where("name", "Customer")->first()["id"];
+
+        $post = $request->all();
+        $post["level_id"] = $level_id;
+        unset($post["picture"]);
+
+        if ($request->file("picture")) {
+            $post["picture"] = "storage/" . $request->file("picture")->storeAs("users", Str::random() . "." . $request->file("picture")->getClientOriginalExtension(), "public");
+        }
+
+        $id = User::create($post)->id;
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $id
+            ]
+        ], 200);
     }
 
     public function show()

@@ -20,6 +20,7 @@ Route::group([
     "prefix" => "auth"
 ], function() {
     Route::post("/login", [AuthController::class, "login"]);
+    Route::post("/register", [AuthController::class, "register"]);
     Route::get("/show", [AuthController::class, "show"])->middleware(["auth:sanctum"]);
     Route::delete("/logout", [AuthController::class, "logout"])->middleware(["auth:sanctum"]);
 });
