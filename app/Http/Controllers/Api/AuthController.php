@@ -80,6 +80,7 @@ class AuthController extends Controller
         if ($request->file("picture")) {
             $post["picture"] = "storage/" . $request->file("picture")->storeAs("users", Str::random() . "." . $request->file("picture")->getClientOriginalExtension(), "public");
         }
+        $post["password"] = Hash::make($request->password);
 
         $id = User::create($post)->id;
 
