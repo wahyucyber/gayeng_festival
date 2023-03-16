@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EventController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\NewsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,5 +44,15 @@ Route::group([
         Route::post("/store", [EventController::class, "store"]);
         Route::put("/{slug}/update", [EventController::class, "update"]);
         Route::delete("/{slug}/destroy", [EventController::class, "destroy"]);
+    });
+
+    Route::group([
+        "prefix" => "news"
+    ], function() {
+        Route::get("/", [NewsController::class, "index"]);
+        Route::get("/{slug}/show", [NewsController::class, "show"]);
+        Route::post("/store", [NewsController::class, "store"]);
+        Route::put("/{slug}/update", [NewsController::class, "update"]);
+        Route::delete("/{slug}/destroy", [NewsController::class, "destroy"]);
     });
 });
