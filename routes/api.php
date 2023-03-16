@@ -26,6 +26,13 @@ Route::group([
 });
 
 Route::group([
+    "prefix" => "event"
+], function() {
+    Route::get("/", [EventController::class, "index"]);
+    Route::get("/{slug}/show", [EventController::class, "show"]);
+});
+
+Route::group([
     "prefix" => "admin",
     "middleware" => ["auth:sanctum", "abilities:Admin"]
 ], function() {
