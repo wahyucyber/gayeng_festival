@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -29,7 +33,7 @@ class EventController extends Controller
 
         $events = Event::with(["user" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
-        }]);
+        }, "user.level"])->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
 
         if ($title) {
             $events->where("title", "LIKE", "%$title%");
@@ -69,30 +73,146 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
+            "title" => "required|max:255|unique:events,title",
+            "date" => "required|date",
+            "start_time" => "required",
+            "end_time" => "required",
+            "price" => "required",
+            "stock" => "required",
+            "description" => "required"
+        ]);
+
+        if ($validation->fails()) {
+            return Response::json([
+                "status" => false,
+                "message" => $validation->errors()
+            ], 400);
+        }
+
+        $post = $request->all();
+        $post["slug"] = Str::slug($request->title);
+        $post["user_id"] = Auth::id();
+
+        unset($post["picture"]);
+
+        if ($request->file("picture")) {
+            $post["picture"] = "storage/" . $request->file("picture")->storeAs("events", Str::random() . "." . $request->file("picture")->getClientOriginalExtension(), "public");
+        }
+
+        $id = Event::create($post)->id;
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $id
+            ]
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $event = Event::where("slug", $slug)->with(["user" => function($q) {
+            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
+        }, "user.level"])->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"))->first();
+
+        if ($event == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "Event not found."
+            ], 404);
+        }
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => $event
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $slug)
     {
-        //
+        $event = Event::where("slug", $slug)->first();
+
+        if ($event == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "Event not found."
+            ], 404);
+        }
+
+        $validation = Validator::make($request->all(), [
+            "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
+            "title" => "required|max:255|unique:events,title," . $event["id"],
+            "date" => "required|date",
+            "start_time" => "required",
+            "end_time" => "required",
+            "price" => "required",
+            "stock" => "required",
+            "description" => "required"
+        ]);
+
+        if ($validation->fails()) {
+            return Response::json([
+                "status" => false,
+                "message" => $validation->errors()
+            ], 400);
+        }
+
+        $put = $request->all();
+        $put["slug"] = Str::slug($request->title);
+        $put["user_id"] = Auth::id();
+
+        unset($put["picture"]);
+
+        if ($request->file("picture")) {
+            Storage::delete([str_replace("storage/", "", $event["picture"])]);
+            $put["picture"] = "storage/" . $request->file("picture")->storeAs("events", Str::random() . "." . $request->file("picture")->getClientOriginalExtension(), "public");
+        }
+
+        $event->update($put);
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $event["id"]
+            ]
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $slug)
     {
-        //
+        $event = Event::where("slug", $slug)->first();
+
+        if ($event == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "Event not found."
+            ], 404);
+        }
+
+        Storage::delete([str_replace("storage/", "", $event["picture"])]);
+
+        $event->delete();
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $event["id"]
+            ]
+        ], 200);
     }
 }

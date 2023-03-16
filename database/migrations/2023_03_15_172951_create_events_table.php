@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("user_id");
             $table->string("picture")->nullable();
-            $table->string("title");
+            $table->string("slug")->unique();
+            $table->string("title")->unique();
             $table->date("date");
             $table->time("start_time");
             $table->time("end_time");

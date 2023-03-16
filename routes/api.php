@@ -32,5 +32,9 @@ Route::group([
         "prefix" => "event"
     ], function() {
         Route::get("/", [EventController::class, "index"]);
+        Route::get("/{slug}/show", [EventController::class, "show"]);
+        Route::post("/store", [EventController::class, "store"]);
+        Route::put("/{slug}/update", [EventController::class, "update"]);
+        Route::delete("/{slug}/destroy", [EventController::class, "destroy"]);
     });
 });
