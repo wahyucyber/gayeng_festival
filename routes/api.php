@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\NewsController;
 use Illuminate\Support\Facades\Route;
@@ -61,5 +62,20 @@ Route::group([
         Route::post("/store", [NewsController::class, "store"]);
         Route::put("/{slug}/update", [NewsController::class, "update"]);
         Route::delete("/{slug}/destroy", [NewsController::class, "destroy"]);
+    });
+});
+
+Route::group([
+    "prefix" => "user",
+    "middleware" => ["auth:sanctum", "abilities:Customer"]
+], function() {
+    Route::group([
+        "prefix" => "cart"
+    ], function() {
+        Route::get('/', [CartController::class, "index"]);
+        Route::get('/{id}/show', [CartController::class, "show"]);
+        Route::post('/store', [CartController::class, "store"]);
+        Route::put('/{id}/update', [CartController::class, "update"]);
+        Route::delete('/{id}/destroy', [CartController::class, "destroy"]);
     });
 });
