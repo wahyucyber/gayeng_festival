@@ -15,4 +15,9 @@ class Order_item extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
