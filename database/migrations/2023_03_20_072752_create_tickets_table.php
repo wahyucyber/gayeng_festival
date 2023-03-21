@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId("order_item_id");
-            $table->string("code");
+            $table->string("code")->unique();
             $table->timestamps();
         });
     }

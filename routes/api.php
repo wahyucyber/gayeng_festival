@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,5 +78,11 @@ Route::group([
         Route::post('/store', [CartController::class, "store"]);
         Route::put('/{id}/update', [CartController::class, "update"]);
         Route::delete('/{id}/destroy', [CartController::class, "destroy"]);
+    });
+
+    Route::group([
+        "prefix" => "order"
+    ], function() {
+        Route::post("/store", [OrderController::class, "store"]);
     });
 });
