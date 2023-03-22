@@ -110,6 +110,7 @@ class OrderController extends Controller
             ];
         }else {
             $charge["payment_type"] = "qris";
+            $charge["qris_action"] = "generate";
         }
 
         $transaction = CoreApi::charge($charge);
