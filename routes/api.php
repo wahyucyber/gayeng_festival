@@ -99,5 +99,6 @@ Route::group([
         "prefix" => "ticket"
     ], function() {
         Route::get("/", [TicketController::class, "index"]);
+        Route::get("/{code}/show", [TicketController::class, "show"]);
     });
 });

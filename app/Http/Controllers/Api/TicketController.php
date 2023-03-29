@@ -57,8 +57,25 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($code)
     {
-        //
+        $ticket = Ticket::with(["order_item.order" => function($q) {
+            $q->where("user_id", Auth::id());
+        }, "order_item.event" => function($q) {
+            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+        }])->where("code", $code)->first();
+
+        if ($ticket == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "Ticket not found."
+            ], 404);
+        }
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => $ticket
+        ]);
     }
 }
