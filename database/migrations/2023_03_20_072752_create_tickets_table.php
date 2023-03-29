@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("order_item_id");
             $table->string("code")->unique();
+            $table->string("status")->comment("pending or settlement")->default("pending");
             $table->timestamps();
         });
     }
