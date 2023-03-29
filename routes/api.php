@@ -71,6 +71,8 @@ Route::group([
         Route::put("/{slug}/update", [NewsController::class, "update"]);
         Route::delete("/{slug}/destroy", [NewsController::class, "destroy"]);
     });
+
+    Route::post("/ticket/confirm", [TicketController::class, "confirmTicket"]);
 });
 
 Route::group([

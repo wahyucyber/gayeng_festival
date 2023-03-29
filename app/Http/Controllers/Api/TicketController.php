@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
@@ -77,5 +78,40 @@ class TicketController extends Controller
             "message" => "success.",
             "data" => $ticket
         ]);
+    }
+
+    public function confirmTicket(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            "code" => "required|exists:tickets,code"
+        ]);
+
+        if ($validation->fails()) {
+            return Response::json([
+                "status" => false,
+                "message" => $validation->errors()
+            ], 400);
+        }
+
+        $ticket = Ticket::where("code", $request->code)->where("status", "pending")->first();
+
+        if ($ticket == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "Ticket not found."
+            ], 404);
+        }
+
+        $ticket->update([
+            "status" => "settlement"
+        ]);
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $ticket["id"]
+            ]
+        ], 200);
     }
 }
