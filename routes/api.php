@@ -90,6 +90,7 @@ Route::group([
         "prefix" => "order"
     ], function() {
         Route::get("/", [OrderController::class, "index"]);
+        Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*");
         Route::post("/store", [OrderController::class, "store"]);
     });
 });
