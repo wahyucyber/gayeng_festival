@@ -100,7 +100,7 @@ class OrderController extends Controller
 
         $order["invoice_index"] = $invoice_index;
 
-        $order["invoice"] = "INV-" . date("Y/m/d") . ".00" . $invoice_index;
+        $order["invoice"] = "INV-" . date("Y/m/d-h-i-s") . ".00" . $invoice_index;
         $order["pay"] = $pay;
         $order["payment_type"] = $request->payment_type;
 
@@ -167,6 +167,8 @@ class OrderController extends Controller
 
         Order_item::insert($order_items);
 
+        Cart::where("user_id", Auth::id())->delete();
+
         return Response::json([
             "status" => true,
             "message" => "success.",
@@ -194,21 +196,25 @@ class OrderController extends Controller
             "payment_response" => json_encode($req)
         ]);
 
-        $order_item = Order_item::where("order_id", $order["id"])->get();
+        if ($req["transaction_status"] == "settlement") {
+            $order_item = Order_item::where("order_id", $order["id"])->get();
 
-        $tickets = [];
-        $tickets_index = 0;
+            $tickets = [];
+            $tickets_index = 0;
 
-        foreach ($order_item as $key) {
-            $tickets[$tickets_index++] = [
-                "order_item_id" => $key["id"],
-                "code" => date("Ymd") . Str::random(5),
-                "created_at" => now(),
-                "updated_at" => now()
-            ];
+            foreach ($order_item as $key) {
+                for ($i=0; $i < $key["qty"]; $i++) {
+                    $tickets[$tickets_index++] = [
+                        "order_item_id" => $key["id"],
+                        "code" => date("Ymd") . Str::random(5),
+                        "created_at" => now(),
+                        "updated_at" => now()
+                    ];
+                }
+            }
+
+            Ticket::insert($tickets);
         }
-
-        Ticket::insert($tickets);
 
         return Response::json([
             "status" => true,
