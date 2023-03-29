@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Order_item;
+use App\Models\Ticket;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -191,6 +193,22 @@ class OrderController extends Controller
             "payment_status" => $req['transaction_status'],
             "payment_response" => json_encode($req)
         ]);
+
+        $order_item = Order_item::where("order_id", $order["id"])->get();
+
+        $tickets = [];
+        $tickets_index = 0;
+
+        foreach ($order_item as $key) {
+            $tickets[$tickets_index++] = [
+                "order_item_id" => $key["id"],
+                "code" => date("Ymd") . Str::random(5),
+                "created_at" => now(),
+                "updated_at" => now()
+            ];
+        }
+
+        Ticket::insert($tickets);
 
         return Response::json([
             "status" => true,
