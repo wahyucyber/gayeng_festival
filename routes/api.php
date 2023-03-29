@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -92,5 +93,11 @@ Route::group([
         Route::get("/", [OrderController::class, "index"]);
         Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*");
         Route::post("/store", [OrderController::class, "store"]);
+    });
+
+    Route::group([
+        "prefix" => "ticket"
+    ], function() {
+        Route::get("/", [TicketController::class, "index"]);
     });
 });
