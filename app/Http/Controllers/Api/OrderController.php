@@ -9,6 +9,7 @@ use App\Models\Order_item;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Midtrans\Config;
@@ -19,9 +20,36 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = User::where("id", Auth::id())->with("level")->first();
+
+        $limit = $request->limit ? $request->limit : 10;
+
+        $sort = $request->sort;
+        $dir = $request->dir;
+
+        $invoice = $request->search;
+
+        $orders = Order::with(["user" => function($q) {
+            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
+        }, "user.level"]);
+
+        if ($invoice) {
+            $orders->where("invoice", "LIKE", "%$invoice%");
+        }
+
+        if ($user["level"]["name"] == "Customer") {
+            $orders->where("user_id", Auth::id());
+        }
+
+        if ($sort && $dir) {
+            $orders->orderBy($sort, $dir);
+        }else {
+            $orders->latest();
+        }
+
+        return Response::json($orders->paginate($limit));
     }
 
     /**
@@ -141,6 +169,35 @@ class OrderController extends Controller
             "status" => true,
             "message" => "success.",
             "data" => $transaction
+        ], 200);
+    }
+
+    public function handleNotificationMidtrans(Request $request)
+    {
+        $req = $request->all();
+
+        $order = Order::where("invoice", $req['order_id'])->where("payment_status", "pending")->first();
+
+        $payment_response = json_decode($order["payment_response"]);
+
+        if ($req['transaction_id'] != $payment_response->transaction_id) {
+            return Response::json([
+                "status" => false,
+                "message" => "Order not found."
+            ], 404);
+        }
+
+        $order->update([
+            "payment_status" => $req['transaction_status'],
+            "payment_response" => json_encode($req)
+        ]);
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $order["id"]
+            ]
         ], 200);
     }
 

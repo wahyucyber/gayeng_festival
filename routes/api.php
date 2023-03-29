@@ -19,26 +19,32 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-    "prefix" => "auth"
+    // "middleware" => "noLimit"
 ], function() {
-    Route::post("/login", [AuthController::class, "login"]);
-    Route::post("/register", [AuthController::class, "register"]);
-    Route::get("/show", [AuthController::class, "show"])->middleware(["auth:sanctum"]);
-    Route::delete("/logout", [AuthController::class, "logout"])->middleware(["auth:sanctum"]);
-});
+    Route::group([
+        "prefix" => "auth"
+    ], function() {
+        Route::post("/login", [AuthController::class, "login"]);
+        Route::post("/register", [AuthController::class, "register"]);
+        Route::get("/show", [AuthController::class, "show"])->middleware(["auth:sanctum"]);
+        Route::delete("/logout", [AuthController::class, "logout"])->middleware(["auth:sanctum"]);
+    });
 
-Route::group([
-    "prefix" => "event"
-], function() {
-    Route::get("/", [EventController::class, "index"]);
-    Route::get("/{slug}/show", [EventController::class, "show"]);
-});
+    Route::group([
+        "prefix" => "event"
+    ], function() {
+        Route::get("/", [EventController::class, "index"]);
+        Route::get("/{slug}/show", [EventController::class, "show"]);
+    });
 
-Route::group([
-    "prefix" => "news"
-], function() {
-    Route::get("/", [NewsController::class, "index"]);
-    Route::get("/{slug}/show", [NewsController::class, "show"]);
+    Route::group([
+        "prefix" => "news"
+    ], function() {
+        Route::get("/", [NewsController::class, "index"]);
+        Route::get("/{slug}/show", [NewsController::class, "show"]);
+    });
+
+    Route::post("/transaction/handleNotification", [OrderController::class, "handleNotificationMidtrans"]);
 });
 
 Route::group([
@@ -83,6 +89,7 @@ Route::group([
     Route::group([
         "prefix" => "order"
     ], function() {
+        Route::get("/", [OrderController::class, "index"]);
         Route::post("/store", [OrderController::class, "store"]);
     });
 });
