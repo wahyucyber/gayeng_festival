@@ -1,4 +1,6 @@
-@extends('_layout.app')
+@extends('_layout.app', [
+    "dashboard" => false
+])
 
 @section('content')
     <div class="auth-page-wrapper pt-5">
