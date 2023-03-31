@@ -1,5 +1,6 @@
 @extends('_layout.app', [
-    "dashboard" => true
+    "dashboard" => true,
+    "title" => "Dashboard"
 ])
 
 @section('content')

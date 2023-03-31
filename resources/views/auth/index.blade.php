@@ -1,5 +1,6 @@
 @extends('_layout.app', [
-    "dashboard" => false
+    "dashboard" => false,
+    "title" => "Login"
 ])
 
 @section('content')
