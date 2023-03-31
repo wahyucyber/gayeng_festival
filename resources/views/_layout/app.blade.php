@@ -25,6 +25,9 @@
         <!-- custom Css-->
         <link href="{{ env("APP_URL") }}/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
+        <!-- Sweet Alert css-->
+        <link href="{{ env("APP_URL") }}/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
         @yield('css')
 
     </head>
@@ -126,12 +129,17 @@
         <!-- App js -->
         <script src="{{ env("APP_URL") }}/assets/js/app.js"></script>
 
+        <!-- Sweet Alerts js -->
+        <script src="{{ env("APP_URL") }}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
         <!-- particles js -->
         <script src="{{ env("APP_URL") }}/assets/libs/particles.js/particles.js"></script>
         <!-- particles app js -->
         <script src="{{ env("APP_URL") }}/assets/js/pages/particles.app.js"></script>
         <!-- password-addon init -->
         <script src="{{ env("APP_URL") }}/assets/js/pages/password-addon.init.js"></script>
+
+        <script src="{{ env("APP_URL") }}/assets/js/main.js"></script>
 
         @yield('javascript')
     </body>
