@@ -24,7 +24,8 @@ Route::post("/login_post", [AuthController::class, "login_post"])->name("auth.lo
 Route::get("/auth_check", [AuthController::class, "auth_check"])->name("auth.check");
 
 Route::group([
-    "prefix" => "admin"
+    "prefix" => "admin",
+    "middleware" => ["guest"]
 ], function() {
     Route::get("/", [DashboardController::class, "index"])->name("admin.dashboard");
 });
