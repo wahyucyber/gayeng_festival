@@ -33,6 +33,11 @@
                                     <p class="text-muted">Masuk terlebih dahulu untuk melanjutkan.</p>
                                 </div>
                                 <div class="p-2 mt-4">
+                                    @if (Session::exists("error"))
+                                        <div class="alert alert-danger">
+                                            {{ Session::get("error") }}
+                                        </div>
+                                    @endif
                                     <form id="submit">
 
                                         <div class="mb-3">
