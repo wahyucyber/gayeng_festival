@@ -49,6 +49,7 @@ class AuthController extends Controller
         $req = Request::create("/api/auth/logout", "DELETE");
 
         $req->headers->set("Accept", "application/json");
+        $req->headers->set("Authorization", "Bearer " . Session::get("authorization"));
 
         App::handle($req);
 

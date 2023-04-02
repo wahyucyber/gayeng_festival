@@ -150,6 +150,8 @@
                 class Main extends App {
                     constructor() {
                         super()
+
+                        this.showAccount()
                     }
 
                     logout() {
@@ -158,6 +160,36 @@
                             method: `DELETE`,
                             success: e => {
                                 window.location=`{{ route("auth.login") }}`
+                            }
+                        })
+                    }
+
+                    showAccount() {
+                        this.api({
+                            url: `/api/auth/show`,
+                            success: e => {
+                                let data = e.data
+
+                                $(`#show-user`).html(`
+                                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <span class="d-flex align-items-center">
+                                            <img class="rounded-circle header-profile-user" src="${ data.picture }" alt="${ data.name }">
+                                            <span class="text-start ms-xl-2">
+                                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">${ data.name }</span>
+                                                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">${ data.email }</span>
+                                            </span>
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <!-- item-->
+                                        <h6 class="dropdown-header">Selamat Datang ${ data.name }!</h6>
+                                        <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profil</span></a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="pages-profile-settings.html"><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Pengaturan</span></a>
+                                        <a class="dropdown-item logout-button" href="javascript:;"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                                    </div>
+                                `)
                             }
                         })
                     }
