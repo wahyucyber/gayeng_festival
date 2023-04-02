@@ -19,9 +19,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("/login", [AuthController::class, "index"])->name("auth.login");
-Route::post("/login_post", [AuthController::class, "login_post"])->name("auth.login_post");
-Route::get("/auth_check", [AuthController::class, "auth_check"])->name("auth.check");
+Route::group([
+    "middleware" => ["check_auth"]
+], function() {
+    Route::get("/login", [AuthController::class, "index"])->name("auth.login");
+    Route::post("/login_post", [AuthController::class, "login_post"])->name("auth.login_post");
+    Route::get("/auth_check", [AuthController::class, "auth_check"])->name("auth.check");
+});
 
 Route::group([
     "prefix" => "admin",
