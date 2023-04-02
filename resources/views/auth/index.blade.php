@@ -37,13 +37,13 @@
 
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" autocomplete="off" autofocus placeholder="Masukkan email">
+                                            <input type="email" class="form-control" name="email" id="email" autocomplete="off" autofocus placeholder="Masukkan email">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label" for="password-input">Kata Sandi</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input type="password" class="form-control pe-5" placeholder="Enter password" id="password-input">
+                                                <input type="password" class="form-control pe-5" name="password" placeholder="Enter password" id="password-input">
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             </div>
                                         </div>
@@ -85,4 +85,47 @@
         <!-- end Footer -->
     </div>
     <!-- end auth-page-wrapper -->
+@endsection
+
+@section('javascript')
+    <script type="text/javascript">
+        class Auth extends App {
+            constructor() {
+                super()
+            }
+
+            csrf_cookie(e) {
+                e.preventDefault()
+
+                this.api({
+                    url: `sanctum/csrf-cookie`,
+                    success: e => {
+                        this._login_post()
+                    }
+                })
+            }
+
+            _login_post() {
+                let formData = this.formData(`form#submit`)
+
+                this.api({
+                    url: `/login_post`,
+                    method: `POST`,
+                    data: formData,
+                    success: e => {
+                        console.log(e)
+                    },
+                    error: err => {
+                        console.log(err)
+                    }
+                })
+            }
+        }
+
+        var auth = new Auth
+
+        $(document).on(`submit`, `form#submit`, function(e) {
+            auth.csrf_cookie(e)
+        })
+    </script>
 @endsection

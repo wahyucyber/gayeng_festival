@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get("/login", [AuthController::class, "index"])->name("auth.login");
+Route::post("/login_post", [AuthController::class, "login_post"])->name("auth.login_post");
 
 Route::group([
     "prefix" => "admin"

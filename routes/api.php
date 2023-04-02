@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-    // "middleware" => "noLimit"
+    "middleware" => "noLimit"
 ], function() {
     Route::group([
         "prefix" => "auth"
