@@ -38,6 +38,7 @@
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
                                             <input type="email" class="form-control" name="email" id="email" autocomplete="off" autofocus placeholder="Masukkan email">
+                                            <small class="text-danger error" id="error-email"></small>
                                         </div>
 
                                         <div class="mb-3">
@@ -45,6 +46,7 @@
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password" class="form-control pe-5" name="password" placeholder="Enter password" id="password-input">
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                <small class="text-danger error" id="error-password"></small>
                                             </div>
                                         </div>
 
@@ -98,7 +100,7 @@
                 e.preventDefault()
 
                 this.api({
-                    url: `sanctum/csrf-cookie`,
+                    url: `/sanctum/csrf-cookie`,
                     success: e => {
                         this._login_post()
                     }
@@ -108,15 +110,23 @@
             _login_post() {
                 let formData = this.formData(`form#submit`)
 
+                $(`form#submit .error`).html(``)
+
                 this.api({
                     url: `/login_post`,
                     method: `POST`,
                     data: formData,
                     success: e => {
-                        console.log(e)
+                        window.location=`{{ route("auth.check") }}`
                     },
                     error: err => {
-                        console.log(err)
+                        let error = err.message
+
+                        if (error.constructor === Object) {
+                            $.each(error, function (index, value) {
+                                $(`form#submit .error#error-${ index }`).html(`* ${ value }`)
+                            })
+                        }
                     }
                 })
             }

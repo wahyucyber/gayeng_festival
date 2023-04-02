@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -20,6 +21,25 @@ class AuthController extends Controller
 
         $response = App::handle($req);
 
+        $data = json_decode($response->getContent(), true);
+
+        if ($data["status"] == true) {
+            Session::put("authorization", $data["data"]['authorization']['plainTextToken']);
+            Session::put("token_expired", $data["data"]['authorization']['accessToken']['expires_at']);
+            Session::put("level", $data["data"]['user']['level']['name']);
+        }
+
         return $response;
+    }
+
+    public function auth_check()
+    {
+        if (Session::exists("authorization") && Session::exists("token_expired") && Session::exists("level")) {
+            if (Session::get("level") == "Admin") {
+                return redirect()->route("admin.dashboard");
+            }
+        }else {
+            return redirect()->route("auth.login")->with("error", "You must login first!");
+        }
     }
 }
