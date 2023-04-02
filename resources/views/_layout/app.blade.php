@@ -144,6 +144,32 @@
         <script src="{{ env("APP_URL") }}/assets/js/main.js"></script>
 
         @yield('javascript')
+
+        @if ($dashboard == true)
+            <script type="text/javascript">
+                class Main extends App {
+                    constructor() {
+                        super()
+                    }
+
+                    logout() {
+                        this.api({
+                            url: `/logout`,
+                            method: `DELETE`,
+                            success: e => {
+                                window.location=`{{ route("auth.login") }}`
+                            }
+                        })
+                    }
+                }
+
+                var main = new Main
+
+                $(document).on(`click`, `.logout-button`, function() {
+                    main.logout()
+                })
+            </script>
+        @endif
     </body>
 
 

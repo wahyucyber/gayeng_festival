@@ -27,6 +27,8 @@ Route::group([
     Route::get("/auth_check", [AuthController::class, "auth_check"])->name("auth.check");
 });
 
+Route::delete("/logout", [AuthController::class, "logout"])->name("auth.logout");
+
 Route::group([
     "prefix" => "admin",
     "middleware" => ["guest"]
