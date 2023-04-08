@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,5 +43,11 @@ Route::group([
         Route::get("/", [EventController::class, "index"])->name("admin.event");
         Route::get("/create", [EventController::class, "create"])->name("admin.event.create");
         Route::get("/{slug}/update", [EventController::class, "update"])->name("admin.event.update");
+    });
+
+    Route::group([
+        "prefix" => "news"
+    ], function() {
+        Route::get("/", [NewsController::class, "index"])->name("admin.news");
     });
 });
