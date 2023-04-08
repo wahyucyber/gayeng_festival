@@ -41,5 +41,6 @@ Route::group([
     ], function() {
         Route::get("/", [EventController::class, "index"])->name("admin.event");
         Route::get("/create", [EventController::class, "create"])->name("admin.event.create");
+        Route::get("/{slug}/update", [EventController::class, "update"])->name("admin.event.update");
     });
 });

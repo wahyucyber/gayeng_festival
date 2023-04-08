@@ -92,6 +92,10 @@
                 this.editor
 
                 this._initialize()
+
+                @if ($update == true)
+                    this.show()
+                @endif
             }
 
             _initialize() {
@@ -117,15 +121,40 @@
                 } )
             }
 
+            @if ($update == true)
+                show() {
+                    this.api({
+                        url: `/api/admin/event/{{ $slug }}/show`,
+                        success: e => {
+                            let data = e.data
+
+                            $(`form#submit [name=title]`).val(data.title)
+                            $(`form#submit [name=date]`).val(data.date)
+                            $(`form#submit [name=start_time]`).val(data.start_time)
+                            $(`form#submit [name=end_time]`).val(data.end_time)
+                            $(`form#submit [name=price]`).val(data.price)
+                            $(`form#submit [name=stock]`).val(data.stock)
+                            this.editor.setData(data.description)
+                        }
+                    })
+                }
+            @endif
+
             submit(e) {
                 e.preventDefault()
 
                 let formData = this.formData(`form#submit`)
+                let url = `/api/admin/event/store`
+
+                @if ($update == true)
+                    formData.append(`_method`, `PUT`)
+                    url = `/api/admin/event/{{ $slug }}/update`
+                @endif
 
                 $(`form#submit .error`).html(``)
 
                 this.api({
-                    url: `/api/admin/event/store`,
+                    url: url,
                     method: `POST`,
                     content_type: `multipart/form-data`,
                     data: formData,

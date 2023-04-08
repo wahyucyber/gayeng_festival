@@ -14,6 +14,17 @@ class EventController extends Controller
 
     public function create()
     {
-        return view("admin.event.action");
+        return view("admin.event.action", [
+            "update" => false,
+            "slug" => ""
+        ]);
+    }
+
+    public function update($slug)
+    {
+        return view("admin.event.action", [
+            "update" => true,
+            "slug" => $slug
+        ]);
     }
 }

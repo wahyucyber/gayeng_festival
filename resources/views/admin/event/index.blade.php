@@ -89,7 +89,7 @@
                             html: e => {
                                 return `
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary btn-icon"><i class="ri-edit-circle-line"></i></button>
+                                        <a href="{{ env("APP_URL") }}/admin/event/${ e.slug }/update" class="btn btn-primary btn-icon"><i class="ri-edit-circle-line"></i></a>
                                         <button type="button" class="btn btn-danger btn-icon destroy" data-id="${ e.slug }" data-title="${ e.title }"><i class="ri-delete-bin-6-line"></i></button>
                                     </div>
                                 `
