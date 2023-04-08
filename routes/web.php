@@ -49,5 +49,7 @@ Route::group([
         "prefix" => "news"
     ], function() {
         Route::get("/", [NewsController::class, "index"])->name("admin.news");
+        Route::get("/create", [NewsController::class, "create"])->name("admin.news.create");
+        Route::get("/{slug}/update", [NewsController::class, "update"])->name("admin.news.update");
     });
 });

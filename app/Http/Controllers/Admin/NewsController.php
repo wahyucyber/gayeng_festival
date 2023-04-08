@@ -11,4 +11,20 @@ class NewsController extends Controller
     {
         return view("admin.news.index");
     }
+
+    public function create()
+    {
+        return view("admin.news.action", [
+            "update" => false,
+            "slug" => ""
+        ]);
+    }
+
+    public function update($slug)
+    {
+        return view("admin.news.action", [
+            "update" => true,
+            "slug" => $slug
+        ]);
+    }
 }
