@@ -1,0 +1,125 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
+
+.table-responsive {
+    margin: 0
+}
+
+table.laravel-table thead tr th,
+table.laravel-table tfoot tr th,
+table.laravel-table tbody tr td {
+    font-size: 13px;
+    font-weight: normal;
+    min-width: 150px;
+    cursor: pointer;
+    vertical-align: baseline;
+}
+
+table.laravel-table thead tr th,
+table.laravel-table tfoot tr th {
+    font-weight: 500;
+}
+
+table.laravel-table thead tr th i:nth-child(1),
+table.laravel-table tfoot tr th i:nth-child(1) {
+    margin-bottom: -4px;
+}
+
+table.laravel-table thead tr th i:nth-child(2),
+table.laravel-table tfoot tr th i:nth-child(2) {
+    margin-top: -4px;
+}
+
+table.laravel-table thead tr th i {
+    color: #c7c8c9;
+}
+
+table.laravel-table thead tr th i.bi-caret-up-fill,
+table.laravel-table thead tr th i.bi-caret-down-fill {
+    color: #757575;
+}
+
+.laravel-table_pagination {
+    align-items: center;
+}
+
+.laravel-table_pagination .table-info {
+    font-size: 13px;
+}
+
+div.laravel-table_responsive {
+    position: relative;
+}
+
+div.laravel-table_loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.laravel-table_loading img {
+    height: 90px;
+}
+
+@media screen and ( min-width: 576px ) {
+    .laravel-table_filter {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .laravel-table_filter > div {
+        width: 100% !important;
+    }
+
+    .laravel-table_pagination {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media screen and ( min-width: 768px ) {
+    .laravel-table_filter {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .laravel-table_filter > div {
+        width: auto !important;
+    }
+
+    .laravel-table_filter > div:nth-child(2) {
+        width: 30% !important;
+    }
+
+    .laravel-table_pagination {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+    }
+}
+
+@media screen and ( min-width: 992px) {
+    .laravel-table_filter {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .laravel-table_filter > div {
+        width: auto !important;
+    }
+
+    .laravel-table_filter > div:nth-child(2) {
+        width: 20% !important;
+    }
+
+    .laravel-table_pagination {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+    }
+}

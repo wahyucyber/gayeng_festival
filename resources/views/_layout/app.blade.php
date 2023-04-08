@@ -30,6 +30,8 @@
         <!-- Sweet Alert css-->
         <link href="{{ env("APP_URL") }}/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
+        <link href="{{ env("APP_URL") }}/assets/css/laravel_table.bootstrap-5.2.css" rel="stylesheet" type="text/css">
+
         @yield('css')
 
     </head>
@@ -119,7 +121,7 @@
         @endif
 
         <!-- JAVASCRIPT -->
-        <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js" integrity="sha256-a2yjHM4jnF9f54xUQakjZGaqYs/V1CYvWpoqZzC2/Bw=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js" integrity="sha512-LUKzDoJKOLqnxGWWIBM4lzRBlxcva2ZTztO8bTcWPmDSpkErWx0bSP4pdsjNH8kiHAUPaT06UXcb+vOEZH+HpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="{{ env("APP_URL") }}/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="{{ env("APP_URL") }}/assets/libs/simplebar/simplebar.min.js"></script>
@@ -133,6 +135,8 @@
 
         <!-- Sweet Alerts js -->
         <script src="{{ env("APP_URL") }}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+        <script src="{{ env("APP_URL") }}/assets/js/laravel_table.js"></script>
 
         <!-- particles js -->
         <script src="{{ env("APP_URL") }}/assets/libs/particles.js/particles.js"></script>
