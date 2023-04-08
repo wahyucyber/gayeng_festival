@@ -36,5 +36,10 @@ Route::group([
 ], function() {
     Route::get("/", [DashboardController::class, "index"])->name("admin.dashboard");
 
-    Route::get("/event", [EventController::class, "index"])->name("admin.event");
+    Route::group([
+        "prefix" => "event"
+    ], function() {
+        Route::get("/", [EventController::class, "index"])->name("admin.event");
+        Route::get("/create", [EventController::class, "create"])->name("admin.event.create");
+    });
 });

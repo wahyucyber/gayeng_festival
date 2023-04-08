@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ request()->routeIs("admin.event") ? "active" : "" }}" href="{{ route("admin.event") }}"><i class="ri-calendar-event-fill"></i> <span data-key="t-events">Acara</span>
+                <a class="nav-link menu-link {{ request()->routeIs("admin.event*") ? "active" : "" }}" href="{{ route("admin.event") }}"><i class="ri-calendar-event-fill"></i> <span data-key="t-events">Acara</span>
                 </a>
             </li>
         </ul>

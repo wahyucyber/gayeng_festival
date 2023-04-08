@@ -30,7 +30,12 @@
         <!-- Sweet Alert css-->
         <link href="{{ env("APP_URL") }}/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
-        <link href="{{ env("APP_URL") }}/assets/css/laravel_table.bootstrap-5.2.css" rel="stylesheet" type="text/css">
+        <link href="{{ env("APP_URL") }}/assets/css/laravel_table.bootstrap-5.2.css" rel="stylesheet" type="text/css" />
+
+        <!-- One of the following themes -->
+        <link href="{{ env("APP_URL") }}/assets/libs/%40simonwep/pickr/themes/classic.min.css" rel="stylesheet" type="text/css" /> <!-- 'classic' theme -->
+        <link href="{{ env("APP_URL") }}/assets/libs/%40simonwep/pickr/themes/monolith.min.css" rel="stylesheet" type="text/css" /> <!-- 'monolith' theme -->
+        <link href="{{ env("APP_URL") }}/assets/libs/%40simonwep/pickr/themes/nano.min.css" rel="stylesheet" type="text/css" /> <!-- 'nano' theme -->
 
         @yield('css')
 
@@ -137,6 +142,12 @@
         <script src="{{ env("APP_URL") }}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
         <script src="{{ env("APP_URL") }}/assets/js/laravel_table.js"></script>
+
+        <!-- Modern colorpicker bundle -->
+        <script src="{{ env("APP_URL") }}/assets/libs/flatpickr/flatpickr.min.js"></script>
+
+        <!-- ckeditor -->
+        <script src="{{ env("APP_URL") }}/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 
         <!-- particles js -->
         <script src="{{ env("APP_URL") }}/assets/libs/particles.js/particles.js"></script>

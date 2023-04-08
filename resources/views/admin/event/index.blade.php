@@ -5,6 +5,9 @@
 
 @section('content')
     <div class="row">
+        <div class="col-lg-12 d-flex justify-content-end gap-2 mb-3">
+            <a href="{{ route("admin.event.create") }}" class="btn btn-success"><i class="ri-file-add-line"></i> Tambah</a>
+        </div>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header card-primary">
