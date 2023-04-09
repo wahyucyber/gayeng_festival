@@ -58,5 +58,6 @@ Route::group([
         "prefix" => "order"
     ], function() {
         Route::get("/", [OrderController::class, "index"])->name("admin.order");
+        Route::get("/{invoice}/show", [OrderController::class, "show"])->name("admin.order.show")->where("invoice", ".*");
     });
 });

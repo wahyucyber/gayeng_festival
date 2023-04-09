@@ -88,7 +88,7 @@
                         {
                             data: `invoice`,
                             html: e => {
-                                return `<span class="badge bg-primary">${ e.invoice }</span>`
+                                return `<span class="badge bg-primary show-order" data-invoice="${ e.invoice }">${ e.invoice }</span>`
                             }
                         },
                         {
@@ -99,9 +99,9 @@
                             }
                         },
                         {
-                            data: `pay`,
+                            data: `total_pay`,
                             html: e => {
-                                return app.rupiah(e.pay)
+                                return app.rupiah(e.total_pay)
                             }
                         },
                         {
@@ -134,8 +134,18 @@
                     ]
                 })
             }
+
+            showOrder(invoice) {
+                window.location=`{{ env("APP_URL") }}/admin/order/${ invoice}/show`
+            }
         }
 
         var order = new Order
+
+        $(document).on(`click`, `span.show-order`, function() {
+            let invoice = $(this).data(`invoice`)
+
+            order.showOrder(invoice)
+        })
     </script>
 @endsection

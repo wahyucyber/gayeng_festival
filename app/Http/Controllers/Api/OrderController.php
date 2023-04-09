@@ -60,7 +60,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            "payment_type" => "required|in:bri_va,bca_va,bni_va,permata_va,indomaret,alfamart,qris"
+            "payment_type" => "required|in:bri_va,bca_va,bni_va,permata_va,indomaret,alfamart"
         ]);
 
         if ($validation->fails()) {
@@ -112,9 +112,33 @@ class OrderController extends Controller
 
         $orderId = $order["invoice"];
 
+        $charge = [];
+
+        if ($request->payment_type == "bri_va" || $request->payment_type == "bca_va" || $request->payment_type == "mandiri_va" || $request->payment_type == "bni_va" || $request->payment_type == "permata_va") {
+            $charge["payment_type"] = "bank_transfer";
+            $charge["bank_transfer"] = [
+                "bank" => str_replace("_va", "", $request->payment_type)
+            ];
+
+            $order["admin_fee"] = 4000;
+        }else if($request->payment_type == "indomaret" || $request->payment_type == "alfamart") {
+            $charge["payment_type"] = "cstore";
+            $charge["cstore"] = [
+                "store" => $request->payment_type
+            ];
+
+            $order["admin_fee"] = 5000;
+        }
+        // else {
+        //     $charge["payment_type"] = "qris";
+        //     $charge["qris_action"] = "generate";
+        // }
+
+        $order["total_pay"] = $order["pay"] + $order["admin_fee"];
+
         $transaction_details = [
             "order_id" => $orderId,
-            "gross_amount" => $pay
+            "gross_amount" => $order["total_pay"]
         ];
 
         $customer_detail = [
@@ -124,24 +148,8 @@ class OrderController extends Controller
             "phone" => "+62" . str_replace("+62", "", $user["phone"])
         ];
 
-        $charge = [];
         $charge["transaction_details"] = $transaction_details;
         $charge["customer_details"] = $customer_detail;
-
-        if ($request->payment_type == "bri_va" || $request->payment_type == "bca_va" || $request->payment_type == "mandiri_va" || $request->payment_type == "bni_va" || $request->payment_type == "permata_va") {
-            $charge["payment_type"] = "bank_transfer";
-            $charge["bank_transfer"] = [
-                "bank" => str_replace("_va", "", $request->payment_type)
-            ];
-        }else if($request->payment_type == "indomaret" || $request->payment_type == "alfamart") {
-            $charge["payment_type"] = "cstore";
-            $charge["cstore"] = [
-                "store" => $request->payment_type
-            ];
-        }else {
-            $charge["payment_type"] = "qris";
-            $charge["qris_action"] = "generate";
-        }
 
         $transaction = CoreApi::charge($charge);
 
