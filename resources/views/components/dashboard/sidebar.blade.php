@@ -43,6 +43,10 @@
                 <a class="nav-link menu-link {{ request()->routeIs("admin.news*") ? "active" : "" }}" href="{{ route("admin.news") }}"><i class="ri-newspaper-line"></i> <span data-key="t-news">Berita</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ request()->routeIs("admin.order*") ? "active" : "" }}" href="{{ route("admin.order") }}"><i class="ri-exchange-line"></i> <span data-key="t-orders">Transaksi</span>
+                </a>
+            </li>
         </ul>
     </div>
     <!-- Sidebar -->

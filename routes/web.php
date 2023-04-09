@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,5 +52,11 @@ Route::group([
         Route::get("/", [NewsController::class, "index"])->name("admin.news");
         Route::get("/create", [NewsController::class, "create"])->name("admin.news.create");
         Route::get("/{slug}/update", [NewsController::class, "update"])->name("admin.news.update");
+    });
+
+    Route::group([
+        "prefix" => "order"
+    ], function() {
+        Route::get("/", [OrderController::class, "index"])->name("admin.order");
     });
 });
