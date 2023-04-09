@@ -79,7 +79,12 @@ Route::group([
         Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*");
     });
 
-    Route::post("/ticket/confirm", [TicketController::class, "confirmTicket"]);
+    Route::group([
+        "prefix" => "ticket"
+    ], function() {
+        Route::get("/", [TicketController::class, "index"]);
+        Route::post("/confirm", [TicketController::class, "confirmTicket"]);
+    });
 });
 
 Route::group([

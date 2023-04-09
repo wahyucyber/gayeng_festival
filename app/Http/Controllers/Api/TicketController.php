@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,8 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
+        $user = User::where("id", Auth::id())->with("level")->first();
+
         $limit = $request->limit ? $request->limit : 10;
 
         $sort = $request->sort;
@@ -26,8 +29,10 @@ class TicketController extends Controller
         $event_id = $request->event_id;
         $status = $request->status;
 
-        $tickets = Ticket::with(["order_item.order" => function($q) {
-            $q->where("user_id", Auth::id());
+        $tickets = Ticket::with(["order_item.order" => function($q) use($user) {
+            if ($user["level"]["name"] == "Customer") {
+                $q->where("user_id", Auth::id());
+            }
         }, "order_item.event" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
         }]);
