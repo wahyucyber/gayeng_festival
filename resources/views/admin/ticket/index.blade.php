@@ -104,7 +104,8 @@
                     },
                     columns: [
                         {
-                            data: `order_item.event_id`,
+                            data: null,
+                            sort: false,
                             html: e => {
                                 return e.order_item.event != null ? e.order_item.event.title : `-`
                             }
