@@ -66,5 +66,6 @@ Route::group([
         "prefix" => "ticket"
     ], function() {
         Route::get("/", [TicketController::class, "index"])->name("admin.ticket");
+        Route::get("/scan", [TicketController::class, "scan"])->name("admin.ticket.scan");
     });
 });

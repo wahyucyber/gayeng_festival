@@ -154,6 +154,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
         <!-- particles js -->
         <script src="{{ env("APP_URL") }}/assets/libs/particles.js/particles.js"></script>
         <!-- particles app js -->

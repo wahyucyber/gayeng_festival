@@ -11,4 +11,9 @@ class TicketController extends Controller
     {
         return view("admin.ticket.index");
     }
+
+    public function scan()
+    {
+        return view("admin.ticket.scan");
+    }
 }

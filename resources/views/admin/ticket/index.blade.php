@@ -5,6 +5,9 @@
 
 @section('content')
     <div class="row">
+        <div class="col-lg-12 mb-3 d-flex justify-content-end">
+            <a href="{{ route("admin.ticket.scan") }}" class="btn btn-success"><i class="ri-qr-scan-2-line"></i> Scan Tiket</a>
+        </div>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">

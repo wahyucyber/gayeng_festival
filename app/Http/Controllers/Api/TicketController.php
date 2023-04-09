@@ -98,13 +98,15 @@ class TicketController extends Controller
             ], 400);
         }
 
-        $ticket = Ticket::where("code", $request->code)->where("status", "pending")->first();
+        $ticket = Ticket::where("code", $request->code)->where("status", "pending")->with(["order_item.order.user.level", "order_item.event" => function($q) {
+            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+        }])->first();
 
         if ($ticket == null) {
             return Response::json([
                 "status" => false,
                 "message" => "Ticket not found."
-            ], 404);
+            ], 400);
         }
 
         $ticket->update([
@@ -114,9 +116,7 @@ class TicketController extends Controller
         return Response::json([
             "status" => true,
             "message" => "success.",
-            "data" => [
-                "id" => (int) $ticket["id"]
-            ]
+            "data" => $ticket
         ], 200);
     }
 }
