@@ -230,16 +230,22 @@ class OrderController extends Controller
      */
     public function show($invoice)
     {
-        $order = Order::where("user_id", Auth::id())->where("invoice", $invoice)->with(["user" => function($q) {
+        $user = User::where("id", Auth::id())->with("level")->first();
+
+        $order = Order::where("invoice", $invoice)->with(["user" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
         }, "user.level", "order_items.event" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
         }, "order_items.tickets"])->first();
 
+        if ($user["level"]["name"] == "Customer") {
+            $order->where("user_id", Auth::id());
+        }
+
         if ($order == null) {
             return Response::json([
                 "status" => false,
-                "message" => "Order not found."
+                "message" => "Order not found. "
             ], 404);
         }
 

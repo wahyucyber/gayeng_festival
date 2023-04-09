@@ -72,6 +72,13 @@ Route::group([
         Route::delete("/{slug}/destroy", [NewsController::class, "destroy"]);
     });
 
+    Route::group([
+        "prefix" => "order"
+    ], function() {
+        Route::get("/", [OrderController::class, "index"]);
+        Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*");
+    });
+
     Route::post("/ticket/confirm", [TicketController::class, "confirmTicket"]);
 });
 
