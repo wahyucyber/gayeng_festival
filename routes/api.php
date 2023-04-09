@@ -56,6 +56,7 @@ Route::group([
         "prefix" => "event"
     ], function() {
         Route::get("/", [EventController::class, "index"]);
+        Route::get("/select2", [EventController::class, "indexSelect2"]);
         Route::get("/{slug}/show", [EventController::class, "show"]);
         Route::post("/store", [EventController::class, "store"]);
         Route::put("/{slug}/update", [EventController::class, "update"]);

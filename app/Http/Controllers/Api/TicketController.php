@@ -33,7 +33,7 @@ class TicketController extends Controller
             if ($user["level"]["name"] == "Customer") {
                 $q->where("user_id", Auth::id());
             }
-        }, "order_item.event" => function($q) {
+        }, "order_item.order.user.level", "order_item.event" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
         }]);
 

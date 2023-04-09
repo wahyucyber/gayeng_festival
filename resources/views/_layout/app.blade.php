@@ -37,6 +37,9 @@
         <link href="{{ env("APP_URL") }}/assets/libs/%40simonwep/pickr/themes/monolith.min.css" rel="stylesheet" type="text/css" /> <!-- 'monolith' theme -->
         <link href="{{ env("APP_URL") }}/assets/libs/%40simonwep/pickr/themes/nano.min.css" rel="stylesheet" type="text/css" /> <!-- 'nano' theme -->
 
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
         @yield('css')
 
     </head>
@@ -148,6 +151,8 @@
 
         <!-- ckeditor -->
         <script src="{{ env("APP_URL") }}/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <!-- particles js -->
         <script src="{{ env("APP_URL") }}/assets/libs/particles.js/particles.js"></script>

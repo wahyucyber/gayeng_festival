@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,12 @@ Route::group([
         "prefix" => "order"
     ], function() {
         Route::get("/", [OrderController::class, "index"])->name("admin.order");
-        Route::get("/{invoice}/show", [OrderController::class, "show"])->name("admin.order.show")->where("invoice", ".*");
+        Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*")->name("admin.order.show");
+    });
+
+    Route::group([
+        "prefix" => "ticket"
+    ], function() {
+        Route::get("/", [TicketController::class, "index"])->name("admin.ticket");
     });
 });

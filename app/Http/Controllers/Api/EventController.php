@@ -68,6 +68,46 @@ class EventController extends Controller
         return Response::json($events->paginate($limit));
     }
 
+    public function indexSelect2(Request $request)
+    {
+        $term = $request->term;
+
+        $event = Event::latest();
+
+        if ($term) {
+            $event->where("title", "LIKE", "%$term%");
+        }
+
+        $data = $event->simplePaginate(10);
+
+        $morePages = false;
+
+        if ($data->nextPageUrl() != null) {
+            $morePages = true;
+        }
+
+        $items = [];
+        $index = 0;
+
+        foreach ($data->items() as $key) {
+            $items[$index++] = [
+                "id" => $key["id"],
+                "text" => $key["title"]
+            ];
+        }
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "items" => $items,
+                "pagination" => [
+                    "more" => $morePages
+                ]
+            ]
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

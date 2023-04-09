@@ -47,6 +47,10 @@
                 <a class="nav-link menu-link {{ request()->routeIs("admin.order*") ? "active" : "" }}" href="{{ route("admin.order") }}"><i class="ri-exchange-line"></i> <span data-key="t-orders">Transaksi</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ request()->routeIs("admin.ticket*") ? "active" : "" }}" href="{{ route("admin.ticket") }}"><i class="ri-ticket-2-line"></i> <span data-key="t-tickets">Tiket</span>
+                </a>
+            </li>
         </ul>
     </div>
     <!-- Sidebar -->
