@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -68,4 +69,6 @@ Route::group([
         Route::get("/", [TicketController::class, "index"])->name("admin.ticket");
         Route::get("/scan", [TicketController::class, "scan"])->name("admin.ticket.scan");
     });
+
+    Route::get("/report", [ReportController::class, "index"])->name("admin.report");
 });

@@ -20,22 +20,71 @@ class ReportController extends Controller
         $sort = $request->sort;
         $dir = $request->dir;
 
+        $invoice = $request->search;
         $payment_status = $request->payment_status;
+        $date = $request->date;
 
-        $order = Order::latest()->with(["user" => function($q) {
+        $orders = Order::with(["user" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
         }, "user.level"]);
 
+        if ($invoice) {
+            $orders->where("invoice", "LIKE", "%$invoice%");
+        }
+
         if ($payment_status) {
-            $order->where("payment_status", $payment_status);
+            $orders->where("payment_status", $payment_status);
+        }
+
+        if ($date) {
+            $explode_date = explode(" to ", $date);
+            if (count($explode_date) == 1) {
+                $orders->whereDate("created_at", $explode_date[0]);
+            }else {
+                $orders->whereBetween("created_at", [$explode_date[0], $explode_date[1]]);
+            }
         }
 
         if ($sort && $dir) {
-            $order->orderBy($sort, $dir);
+            $orders->orderBy($sort, $dir);
         }else {
-            $order->latest();
+            $orders->latest();
         }
 
-        return Response::json($order->paginate($limit));
+        return Response::json($orders->paginate($limit));
+    }
+
+    public function countTotalPay(Request $request)
+    {
+        $invoice = $request->search;
+        $payment_status = $request->payment_status;
+        $date = $request->date;
+
+        $orders = Order::whereNotNull("id");
+
+        if ($invoice) {
+            $orders->where("invoice", "LIKE", "%$invoice%");
+        }
+
+        if ($payment_status) {
+            $orders->where("payment_status", $payment_status);
+        }
+
+        if ($date) {
+            $explode_date = explode(" to ", $date);
+            if (count($explode_date) == 1) {
+                $orders->whereDate("created_at", $explode_date[0]);
+            }else {
+                $orders->whereBetween("created_at", [$explode_date[0], $explode_date[1]]);
+            }
+        }
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "total_pay" => (int) $orders->sum("total_pay")
+            ]
+        ]);
     }
 }

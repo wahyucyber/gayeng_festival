@@ -88,7 +88,13 @@ Route::group([
         Route::post("/confirm", [TicketController::class, "confirmTicket"]);
     });
 
-    Route::get("/report", [ReportController::class, "index"])->withoutMiddleware(["auth:sanctum", "abilities:Admin"]);
+    Route::group([
+        "prefix" => "report",
+        "middleware" => ["auth:sanctum", "abilities:Admin"]
+    ], function() {
+        Route::get("/", [ReportController::class, "index"]);
+        Route::get("/totalPay", [ReportController::class, "countTotalPay"]);
+    });
 });
 
 Route::group([

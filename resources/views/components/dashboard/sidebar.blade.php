@@ -51,6 +51,10 @@
                 <a class="nav-link menu-link {{ request()->routeIs("admin.ticket*") ? "active" : "" }}" href="{{ route("admin.ticket") }}"><i class="ri-ticket-2-line"></i> <span data-key="t-tickets">Tiket</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ request()->routeIs("admin.report*") ? "active" : "" }}" href="{{ route("admin.report") }}"><i class="ri-survey-line"></i> <span data-key="t-reports">Laporan</span>
+                </a>
+            </li>
         </ul>
     </div>
     <!-- Sidebar -->
