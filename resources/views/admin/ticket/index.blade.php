@@ -41,7 +41,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped table-condensed table-bordered" id="tickets">
+                        <table class="table table-hover table-striped table-condensed table-bordered table-sm" id="tickets">
                             <thead>
                                 <tr>
                                     <th style="width: 20%;">Acara</th>
