@@ -15,7 +15,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped table-condensed table-bordered" id="news">
+                        <table class="table table-hover table-striped table-condensed table-bordered table-sm" id="news">
                             <thead>
                                 <tr>
                                     <th>Foto</th>
@@ -57,8 +57,15 @@
                         'Authorization': this.authorization,
                         'Accept': 'application/json'
                     },
+                    pagination: {
+                        customClass: `pagination-sm`
+                    },
+                    limit: {
+                        customClass: `form-select-sm`
+                    },
                     search: {
-                        placeholder: `Cari judul...`
+                        placeholder: `Cari judul...`,
+                        customClass: `input-group-sm`
                     },
                     columns: [
                         {
