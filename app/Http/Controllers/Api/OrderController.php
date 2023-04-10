@@ -32,6 +32,8 @@ class OrderController extends Controller
         $dir = $request->dir;
 
         $invoice = $request->search;
+        $payment_status = $request->payment_status;
+        $date = $request->date;
 
         $orders = Order::with(["user" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
@@ -43,6 +45,19 @@ class OrderController extends Controller
 
         if ($user["level"]["name"] == "Customer") {
             $orders->where("user_id", Auth::id());
+        }
+
+        if ($payment_status) {
+            $orders->where("payment_status", $payment_status);
+        }
+
+        if ($date) {
+            $explode_date = explode(" to ", $date);
+            if (count($explode_date) == 1) {
+                $orders->whereDate("created_at", $explode_date[0]);
+            }else {
+                $orders->whereBetween("created_at", [$explode_date[0], $explode_date[1]]);
+            }
         }
 
         if ($sort && $dir) {

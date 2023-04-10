@@ -21,6 +21,30 @@
         </div>
         <div class="col-lg-12">
             <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="date" class="form-label">Tanggal</label>
+                                <input type="text" name="date" id="date" class="form-control date" autocomplete="off" placeholder="Tanggal">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="status" class="form-label">Status</label>
+                                <select name="status" id="filter_status" class="form-select status">
+                                    <option value="">Pilih</option>
+                                    <option value="pending">pending</option>
+                                    <option value="settlement">settlement</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card">
                 <div class="card-header card-primary">
                     <h5 class="card-title">Data Transaksi</h5>
                 </div>
@@ -64,7 +88,15 @@
 
                 this.orders
 
+                this._intialize()
                 this.get()
+            }
+
+            _intialize() {
+                $(`input[name=date]`).flatpickr({
+                    dateFormat: `Y-m-d`,
+                    mode: `range`
+                })
             }
 
             get() {
@@ -135,6 +167,13 @@
                 })
             }
 
+            filter() {
+                this.orders.fresh({
+                    date: $(`input[name=date]`).val(),
+                    payment_status: $(`select[name=status]`).val()
+                })
+            }
+
             showOrder(invoice) {
                 window.location=`{{ env("APP_URL") }}/admin/order/${ invoice}/show`
             }
@@ -146,6 +185,10 @@
             let invoice = $(this).data(`invoice`)
 
             order.showOrder(invoice)
+        })
+
+        $(document).on(`change`, `input[name=date], select[name=status]`, function() {
+            order.filter()
         })
     </script>
 @endsection
