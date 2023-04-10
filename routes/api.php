@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\TicketController;
 use Illuminate\Support\Facades\Route;
 
@@ -86,6 +87,8 @@ Route::group([
         Route::get("/", [TicketController::class, "index"]);
         Route::post("/confirm", [TicketController::class, "confirmTicket"]);
     });
+
+    Route::get("/report", [ReportController::class, "index"])->withoutMiddleware(["auth:sanctum", "abilities:Admin"]);
 });
 
 Route::group([
