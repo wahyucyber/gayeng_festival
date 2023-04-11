@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProfilController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\TicketController;
 use Illuminate\Support\Facades\Route;
@@ -95,6 +96,8 @@ Route::group([
         Route::get("/", [ReportController::class, "index"]);
         Route::get("/totalPay", [ReportController::class, "countTotalPay"]);
     });
+
+    Route::put('/update_profile', [ProfilController::class, "update"]);
 });
 
 Route::group([
@@ -125,4 +128,6 @@ Route::group([
         Route::get("/", [TicketController::class, "index"]);
         Route::get("/{code}/show", [TicketController::class, "show"]);
     });
+
+    Route::put('/update_profile', [ProfilController::class, "update"]);
 });
