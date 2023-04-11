@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProfilController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\AuthController;
@@ -71,4 +72,6 @@ Route::group([
     });
 
     Route::get("/report", [ReportController::class, "index"])->name("admin.report");
+
+    Route::get("/profile", [ProfilController::class, "index"])->name("admin.profile");
 });
