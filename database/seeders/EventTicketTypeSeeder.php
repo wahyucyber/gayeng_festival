@@ -15,12 +15,12 @@ class EventTicketTypeSeeder extends Seeder
     {
         Event_ticket_type::insert([
             [
-                "name" => "Online",
+                "name" => "Offline (OTS/Localshop)",
                 "created_at" => now(),
                 "updated_at" => now()
             ],
             [
-                "name" => "Offline (OTS/Localshop)",
+                "name" => "Online",
                 "created_at" => now(),
                 "updated_at" => now()
             ]
