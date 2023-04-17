@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string("picture")->nullable();
             $table->string("slug")->unique();
             $table->string("title")->unique();
-            $table->date("date");
             $table->time("start_time");
             $table->time("end_time");
             $table->integer("price");
