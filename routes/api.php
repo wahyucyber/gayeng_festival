@@ -66,7 +66,7 @@ Route::group([
         Route::put("/{slug}/update", [EventController::class, "update"]);
         Route::delete("/{slug}/destroy", [EventController::class, "destroy"]);
 
-        Route::get("/ticket/type", [EventTicketTypeController::class, "index"])->withoutMiddleware(["auth:sanctum", "abilities:Admin"]);
+        Route::get("/ticket/type", [EventTicketTypeController::class, "index"]);
     });
 
     Route::get("/category", [CategoryController::class, "index"]);
