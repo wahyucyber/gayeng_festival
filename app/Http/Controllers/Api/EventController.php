@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Event_ticket;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -119,7 +120,16 @@ class EventController extends Controller
             "title" => "required|max:255|unique:events,title",
             "start_time" => "required",
             "end_time" => "required",
-            "description" => "required"
+            "description" => "required",
+            "tickets.*.event_ticket_type_id" => "required|exists:event_ticket_types.id",
+            "tickets.*.category" => "required|max:255",
+            "tickets.*.name" => "required|max:255",
+            "tickets.*.stock" => "required|integer",
+            "tickets.*.amount_per_transaction" => "required|integer",
+            "tickets.*.price" => "required|integer",
+            "tickets.*.start_date" => "required",
+            "tickets.*.end_date" => "required",
+            "tickets.*.on_sale" => "reqired|boolean"
         ]);
 
         if ($validation->fails()) {
@@ -140,6 +150,28 @@ class EventController extends Controller
         }
 
         $id = Event::create($post)->id;
+
+        $tickets = [];
+        $ticket_index = 0;
+
+        foreach ($request->tickets as $key) {
+            $tickets[$ticket_index++] = [
+                "event_id" => $id,
+                "event_ticket_type_id" => $key["event_ticket_type_id"],
+                "category" => $key["category"],
+                "name" => $key["name"],
+                "stock" => $key["stock"],
+                "amount_per_transaction" => $key["amount_per_transaction"],
+                "price" => $key["price"],
+                "start_date" => $key["start_date"],
+                "end_date" => $key["end_date"],
+                "on_sale" => $key["on_sale"],
+                "created_at" => now(),
+                "updated_at" => now(),
+            ];
+        }
+
+        Event_ticket::insert($tickets);
 
         return Response::json([
             "status" => true,
