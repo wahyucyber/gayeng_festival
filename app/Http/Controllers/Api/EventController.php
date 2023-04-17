@@ -33,7 +33,7 @@ class EventController extends Controller
 
         $events = Event::with(["user" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
-        }, "user.level"])->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+        }, "user.level", "category"])->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
 
         if ($title) {
             $events->where("title", "LIKE", "%$title%");
@@ -157,7 +157,7 @@ class EventController extends Controller
     {
         $event = Event::where("slug", $slug)->with(["user" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
-        }, "user.level"])->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"))->first();
+        }, "user.level", "category"])->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"))->first();
 
         if ($event == null) {
             return Response::json([
@@ -188,13 +188,11 @@ class EventController extends Controller
         }
 
         $validation = Validator::make($request->all(), [
+            "category_id" => "required|exists:categories,id",
             "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
             "title" => "required|max:255|unique:events,title," . $event["id"],
-            "date" => "required|date",
             "start_time" => "required",
             "end_time" => "required",
-            "price" => "required",
-            "stock" => "required",
             "description" => "required"
         ]);
 
