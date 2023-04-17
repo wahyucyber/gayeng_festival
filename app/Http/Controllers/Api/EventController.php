@@ -114,13 +114,11 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            "category_id" => "required|exists:categories,id",
             "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
             "title" => "required|max:255|unique:events,title",
-            "date" => "required|date",
             "start_time" => "required",
             "end_time" => "required",
-            "price" => "required",
-            "stock" => "required",
             "description" => "required"
         ]);
 

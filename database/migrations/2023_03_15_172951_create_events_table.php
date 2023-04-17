@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string("title")->unique();
             $table->time("start_time");
             $table->time("end_time");
-            $table->integer("price");
-            $table->integer("stock");
             $table->text("description");
             $table->timestamps();
         });
