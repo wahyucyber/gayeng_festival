@@ -18,18 +18,16 @@
                         <table class="table table-hover table-striped table-condensed table-bordered table-sm" id="events">
                             <thead>
                                 <tr>
-                                    <th>Foto</th>
-                                    <th>Judul</th>
-                                    <th>Tanggal dan Waktu</th>
-                                    <th>Aksi</th>
+                                    <th width="20%">Foto</th>
+                                    <th width="60%">Item</th>
+                                    <th width="20%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr>
                                     <th>Foto</th>
-                                    <th>Judul</th>
-                                    <th>Tanggal dan Waktu</th>
+                                    <th>Item</th>
                                     <th>Aksi</th>
                                 </tr>
                             </tfoot>
@@ -74,19 +72,31 @@
                             data: null,
                             sort: false,
                             html: e => {
-                                return `<img src="${ e.picture }" style="width: 100px;" alt="${ e.title }" />`
+                                return `<img src="${ e.picture }" style="width: 100%;" alt="${ e.title }" />`
                             }
                         },
                         {
-                            data: `title`
-                        },
-                        {
-                            data: null,
-                            sort: false,
+                            data: `title`,
                             html: e => {
                                 return `
-                                    <div>${ e.date }</div>
-                                    <small class="badge bg-primary">${ e.start_time } - ${ e.end_time }</small>
+                                    <div class="row p-0">
+                                        <div class="col-lg-6 mb-1">
+                                            <h6 class="m-0 d-flex align-items-center gap-1 text-dark"><i class="ri-film-line"></i> Nama</h6>
+                                            <small>${ e.title }</small>
+                                        </div>
+                                        <div class="col-lg-6 mb-1">
+                                            <h6 class="m-0 d-flex align-items-center gap-1 text-dark"><i class="ri-git-merge-line"></i> Kategori</h6>
+                                            <small>${ e.category != null ? e.category.name : `-` }</small>
+                                        </div>
+                                        <div class="col-lg-12 mb-1">
+                                            <h6 class="m-0 d-flex align-items-center gap-1 text-dark"><i class="ri-calendar-event-fill"></i> Tanggal</h6>
+                                            <small>${ app.dateTimeFormat(e.start_time) } - ${ app.dateTimeFormat(e.end_time) }</small>
+                                        </div>
+                                        <div class="col-lg-12 mb-1">
+                                            <h6 class="m-0 d-flex align-items-center gap-1 text-dark"><i class="ri-map-pin-line"></i> Lokasi</h6>
+                                            <small>${ e.location }</small>
+                                        </div>
+                                    </div>
                                 `
                             }
                         },

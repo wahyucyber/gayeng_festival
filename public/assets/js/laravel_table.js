@@ -605,13 +605,13 @@
                           * Jika parameter html digunakan.
                           */
                          if (valueColumns.html) {
-                             td += `<td key="${ indexColumns }">${ valueColumns.html(value) }</td>`
+                             td += `<td style="vertical-align: middle;" key="${ indexColumns }">${ valueColumns.html(value) }</td>`
 
                          /*
                           * Jika parameter html tidak digunakan.
                           */
                          }else {
-                             td += `<td key="${ indexColumns }">${ eval(`value.` + valueColumns.data) }</td>`
+                             td += `<td style="vertical-align: middle;" key="${ indexColumns }">${ eval(`value.` + valueColumns.data) }</td>`
                          }
                      })
 
