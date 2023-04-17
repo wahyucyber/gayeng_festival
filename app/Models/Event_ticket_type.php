@@ -10,4 +10,9 @@ class Event_ticket_type extends Model
     use HasFactory;
 
     protected $fillable = ["name"];
+
+    public function event_tickets()
+    {
+        return $this->hasMany(Event_ticket::class);
+    }
 }
