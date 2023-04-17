@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
+            EventTicketTypeSeeder::class,
         ]);
     }
 }
