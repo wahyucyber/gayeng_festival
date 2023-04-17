@@ -13,14 +13,26 @@
                 <div class="card-body">
                     <form id="submit">
                         <div class="row">
-                            <div class="col-lg-5 mb-3">
+                            <div class="col-lg-12">
+                                <h5>Acara</h5>
+                            </div>
+                            <div class="col-lg-12 mb-3">
+                                <div class="form-group">
+                                    <label for="category_id" class="form-label">Kaegori</label>
+                                    <select name="category_id" id="category_id" class="form-select category_id">
+                                        <option value="">Pilih</option>
+                                    </select>
+                                    <small class="text-danger error" id="error-category_id"></small>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-3">
                                 <div class="form-group">
                                     <label for="picture" class="form-label">Foto</label>
                                     <input type="file" name="picture" id="picture" class="form-control picture">
                                     <small class="text-danger error" id="error-picture"></small>
                                 </div>
                             </div>
-                            <div class="col-lg-7 mb-3">
+                            <div class="col-lg-12 mb-3">
                                 <div class="form-group">
                                     <label for="title" class="from-label">Judul</label>
                                     <input type="text" name="title" id="title" class="form-control title" autocomplete="off" placeholder="Judul" autofocus="autofocus">
@@ -29,40 +41,16 @@
                             </div>
                             <div class="col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="date" class="form-label">Tanggal</label>
-                                    <input type="text" name="date" id="date" class="form-control date" autocomplete="off" placeholder="Tanggal">
-                                    <small class="text-danger error" id="error-date"></small>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 mb-3">
-                                <div class="form-group">
-                                    <label for="start_time" class="form-label">Waktu Mulai</label>
-                                    <input type="text" name="start_time" id="start_time" class="form-control start_time" autocomplete="off" placeholder="Waktu Mulai">
+                                    <label for="start_time" class="form-label">Tanggal Mulai</label>
+                                    <input type="text" name="start_time" id="start_time" class="form-control start_time" autocomplete="off" placeholder="Tanggal">
                                     <small class="text-danger error" id="error-start_time"></small>
                                 </div>
                             </div>
-                            <div class="col-lg-3 mb-3">
+                            <div class="col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="end_time" class="form-label">Waktu Selesai</label>
-                                    <input type="text" name="end_time" id="end_time" class="form-control end_time" autocomplete="off" placeholder="Waktu Selesai">
+                                    <label for="end_time" class="form-label">Tanggal Akhir</label>
+                                    <input type="text" name="end_time" id="end_time" class="form-control end_time" autocomplete="off" placeholder="Tanggal">
                                     <small class="text-danger error" id="error-end_time"></small>
-                                </div>
-                            </div>
-                            <div class="col-lg-9 mb-3">
-                                <div class="form-group">
-                                    <label for="price" class="form-label">Harga</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">IDR</span>
-                                        <input type="number" name="price" id="price" class="form-control price" autocomplete="off" placeholder="Harga">
-                                    </div>
-                                    <small class="text-danger error" id="error-price"></small>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 mb-3">
-                                <div class="form-group">
-                                    <label for="stock" class="form-label">Stok</label>
-                                    <input type="number" name="stock" id="stock" class="form-control stock" autocomplete="off" placeholder="Stok">
-                                    <small class="text-danger error" id="error-stock"></small>
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-3">
@@ -70,6 +58,20 @@
                                     <label for="description" class="form-label">Deskripsi</label>
                                     <textarea name="description" id="description" rows="4" class="form-control description" autocomplete="off" placeholder="Deskripsi"></textarea>
                                     <small class="text-danger error" id="error-description"></small>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-3">
+                                <div class="form-group">
+                                    <label for="location" class="form-label">Lokasi</label>
+                                    <input type="text" name="location" id="location" class="form-control location" autocomplete="off" placeholder="Lokasi">
+                                    <small class="text-danger error" id="error-location"></small>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-3">
+                                <div class="form-group">
+                                    <label for="term_and_condition" class="form-label">Syarat dan Ketentuan</label>
+                                    <textarea name="term_and_condition" id="term_and_condition" rows="4" class="form-control term_and_condition" autocomplete="off" placeholder="Syarat dan Ketentuan"></textarea>
+                                    <small class="text-danger error" id="error-term_and_condition"></small>
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-3 d-grid gap-2">
@@ -89,24 +91,49 @@
             constructor() {
                 super()
 
-                this.editor
-
                 this._initialize()
+
+                this.description
+                this.term_and_condition
 
                 @if ($update == true)
                     this.show()
                 @endif
             }
 
+            get_categry() {
+                this.api({
+                    url: `/api/admin/event/category`,
+                    success: e => {
+                        let data = e.data
+
+                        let option = `<option value="">Pilih</option>`
+
+                        $.each(data, function (index, value) {
+                            option += `<option value="${ value.id }">${ value.name }</option>`
+                        })
+
+                        $(`form#submit [name=category_id]`).html(option)
+                    }
+                })
+            }
+
             _initialize() {
-                $(`form#submit input[name=date]`).flatpickr({
-                    dateFormat: `Y-m-d`
+                this.get_categry()
+
+                $(`form#submit input[name=start_time]`).flatpickr({
+                    enableTime: true,
+                    dateFormat: `Y-m-d h:i`,
+                    time_24hr: true,
+                    onChange: e => {
+                        let start_time = $(`form#submit [name=start_time]`).val()
+                        $(`form#submit [name=end_time]`).val(start_time)
+                    }
                 })
 
-                $(`form#submit input[name=start_time], form#submit input[name=end_time]`).flatpickr({
+                $(`form#submit input[name=end_time]`).flatpickr({
                     enableTime: true,
-                    noCalendar: true,
-                    dateFormat: `H:i`,
+                    dateFormat: `Y-m-d h:i`,
                     time_24hr: true
                 })
 
@@ -115,7 +142,17 @@
                         uploadUrl: 'https://ckeditor.com/apps/ckfinder/3.5.0/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
                     }
                 } ).then(e => {
-                    this.editor = e
+                    this.description = e
+                }).catch( error => {
+                    console.error( error )
+                } )
+
+                ClassicEditor.create( document.querySelector( '#term_and_condition' ), {
+                    ckfinder: {
+                        uploadUrl: 'https://ckeditor.com/apps/ckfinder/3.5.0/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
+                    }
+                } ).then(e => {
+                    this.term_and_condition = e
                 }).catch( error => {
                     console.error( error )
                 } )
@@ -134,7 +171,8 @@
                             $(`form#submit [name=end_time]`).val(data.end_time)
                             $(`form#submit [name=price]`).val(data.price)
                             $(`form#submit [name=stock]`).val(data.stock)
-                            this.editor.setData(data.description)
+                            this.description.setData(data.description)
+                            this.term_and_condition.setData(data.term_and_condition)
                         }
                     })
                 }

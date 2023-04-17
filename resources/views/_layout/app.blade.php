@@ -97,6 +97,8 @@
                     </div>
                     <!-- End Page-content -->
 
+                    @yield('modal')
+
                     <footer class="footer">
                         <div class="container-fluid">
                             <div class="row">
@@ -219,6 +221,17 @@
 
                 $(document).on(`click`, `.logout-button`, function() {
                     main.logout()
+                })
+
+                $(document).on(`click`, `[data-bs-toggle=modal]`, function() {
+                    let target = $(this).data(`bs-target`)
+                    let title = $(this).data(`bs-title`)
+                    let action = $(this).data(`bs-action`)
+                    let id = $(this).data(`bs-id`)
+
+                    $(`.modal${ target } .modal-header > h5`).html(title)
+                    $(`.modal${ target } .modal-body > input[type=hidden][name=action]`).val(action)
+                    $(`.modal${ target } .modal-body > input[type=hidden][name=id]`).val(id)
                 })
             </script>
         @endif
