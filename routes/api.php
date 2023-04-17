@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\EventTicketTypeController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfilController;
@@ -64,9 +65,11 @@ Route::group([
         Route::post("/store", [EventController::class, "store"]);
         Route::put("/{slug}/update", [EventController::class, "update"]);
         Route::delete("/{slug}/destroy", [EventController::class, "destroy"]);
+
+        Route::get("/ticket/type", [EventTicketTypeController::class, "index"])->withoutMiddleware(["auth:sanctum", "abilities:Admin"]);
     });
 
-    Route::get("/category", [CategoryController::class, "index"])->withoutMiddleware(["auth:sanctum", "abilities:Admin"]);
+    Route::get("/category", [CategoryController::class, "index"]);
 
     Route::group([
         "prefix" => "news"
