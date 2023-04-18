@@ -52,12 +52,6 @@
                 super()
 
                 this.editor
-
-                this._initialize()
-
-                @if ($update == true)
-                    this.show()
-                @endif
             }
 
             _initialize() {
@@ -119,6 +113,12 @@
         }
 
         var news = new News
+
+        news._initialize()
+
+        @if ($update == true)
+            news.show()
+        @endif
 
         $(document).on(`submit`, `form#submit`, function(e) {
             news.submit(e)
