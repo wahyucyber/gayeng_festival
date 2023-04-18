@@ -87,9 +87,6 @@
                 super()
 
                 this.orders
-
-                this._intialize()
-                this.get()
             }
 
             _intialize() {
@@ -180,6 +177,9 @@
         }
 
         var order = new Order
+
+        order._intialize()
+        order.get()
 
         $(document).on(`click`, `span.show-order`, function() {
             let invoice = $(this).data(`invoice`)
