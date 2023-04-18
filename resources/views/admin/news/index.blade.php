@@ -46,8 +46,6 @@
                 super()
 
                 this.news
-
-                this.get()
             }
 
             get() {
@@ -108,6 +106,8 @@
         }
 
         var news = new News
+
+        news.get()
 
         $(document).on(`click`, `button.destroy`, function() {
             let id = $(this).data(`id`)
