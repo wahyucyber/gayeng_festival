@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\EventTicketController;
 use App\Http\Controllers\Api\EventTicketTypeController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OrderController;
@@ -67,7 +68,18 @@ Route::group([
         Route::delete("/{slug}/destroy", [EventController::class, "destroy"]);
 
         Route::get("/category", [CategoryController::class, "index"]);
-        Route::get("/ticket/type", [EventTicketTypeController::class, "index"]);
+
+        Route::group([
+            "prefix" => "ticket"
+        ], function() {
+            Route::get("/", [EventTicketController::class, "index"]);
+            Route::get("/{id}/show", [EventTicketController::class, "show"]);
+            Route::post("/store", [EventTicketController::class, "store"]);
+            Route::put("/{id}/update", [EventTicketController::class, "update"]);
+            Route::delete("/{id}/destroy", [EventTicketController::class, "destroy"]);
+
+            Route::get("/type", [EventTicketTypeController::class, "index"]);
+        });
     });
 
     Route::group([
