@@ -45,6 +45,7 @@ Route::group([
         "prefix" => "event"
     ], function() {
         Route::get("/", [EventController::class, "index"])->name("admin.event");
+        Route::get("/{slug}/show", [EventController::class, "show"])->name("admin.event.show");
         Route::get("/create", [EventController::class, "create"])->name("admin.event.create");
         Route::get("/{slug}/update", [EventController::class, "update"])->name("admin.event.update");
     });
