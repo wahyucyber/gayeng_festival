@@ -79,10 +79,6 @@
                 super()
 
                 this.reports
-
-                this._intialize()
-                this.get()
-                this.getTotalPay()
             }
 
             _intialize() {
@@ -180,6 +176,10 @@
         }
 
         var report = new Report
+
+        report._intialize()
+        report.get()
+        report.getTotalPay()
 
         $(document).on(`change`, `input[name=date], select[name=status]`, function() {
             report.filter()
