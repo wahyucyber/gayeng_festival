@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use App\Models\Event_ticket;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -213,7 +212,7 @@ class EventController extends Controller
         unset($put["picture"]);
 
         if ($request->file("picture")) {
-            Storage::delete([str_replace("storage/", "", $event["picture"])]);
+            Storage::delete(str_replace("storage/", "", $event["picture"]));
             $put["picture"] = "storage/" . $request->file("picture")->storeAs("events", Str::random() . "." . $request->file("picture")->getClientOriginalExtension(), "public");
         }
 
@@ -242,7 +241,7 @@ class EventController extends Controller
             ], 404);
         }
 
-        Storage::delete([str_replace("storage/", "", $event["picture"])]);
+        Storage::delete(str_replace("storage/", "", $event["picture"]));
 
         $event->delete();
 
