@@ -46,8 +46,6 @@
                 super()
 
                 this.events
-
-                this.get()
             }
 
             get() {
@@ -130,6 +128,8 @@
         }
 
         var event = new Event
+
+        event.get()
 
         $(document).on(`click`, `button.destroy`, function() {
             let id = $(this).data(`id`)
