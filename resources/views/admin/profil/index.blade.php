@@ -57,8 +57,6 @@
         class Profile extends App {
             constructor() {
                 super()
-
-                this.get()
             }
 
             get() {
@@ -107,6 +105,8 @@
         }
 
         var profile = new Profile
+
+        profile.get()
 
         $(document).on(`submit`, `form#submit`, function(e) {
             profile.submit(e)
