@@ -138,10 +138,10 @@
                     enableTime: true,
                     dateFormat: `Y-m-d h:i`,
                     time_24hr: true,
-                    onChange: function(selectedDates, dateStr, instance){
-                        if (dateStr)
-                            instance.close()
-                    }
+                    // onChange: function(selectedDates, dateStr, instance){
+                    //     if (dateStr)
+                    //         instance.close()
+                    // }
                 })
             }
 
