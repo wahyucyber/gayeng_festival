@@ -91,14 +91,8 @@
             constructor() {
                 super()
 
-                this._initialize()
-
                 this.description
                 this.term_and_condition
-
-                @if ($update == true)
-                    this.show()
-                @endif
             }
 
             get_categry() {
@@ -165,12 +159,11 @@
                         success: e => {
                             let data = e.data
 
+                            $(`form#submit [name=category_id]`).val(data.category_id)
                             $(`form#submit [name=title]`).val(data.title)
-                            $(`form#submit [name=date]`).val(data.date)
                             $(`form#submit [name=start_time]`).val(data.start_time)
                             $(`form#submit [name=end_time]`).val(data.end_time)
-                            $(`form#submit [name=price]`).val(data.price)
-                            $(`form#submit [name=stock]`).val(data.stock)
+                            $(`form#submit [name=location]`).val(data.location)
                             this.description.setData(data.description)
                             this.term_and_condition.setData(data.term_and_condition)
                         }
@@ -211,6 +204,12 @@
         }
 
         var event = new Event
+
+        event._initialize()
+
+        @if ($update == true)
+            event.show()
+        @endif
 
         $(document).on(`submit`, `form#submit`, function(e) {
             event.submit(e)
