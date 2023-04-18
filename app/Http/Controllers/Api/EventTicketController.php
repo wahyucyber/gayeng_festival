@@ -55,7 +55,7 @@ class EventTicketController extends Controller
             "price" => "required|integer",
             "start_date" => "required",
             "end_date" => "required",
-            "on_sale" => "required|boolean"
+            "on_sale" => "required|in:true,false"
         ]);
 
         if ($validation->fails()) {
@@ -66,6 +66,7 @@ class EventTicketController extends Controller
         }
 
         $post = $request->all();
+        $post["on_sale"] = $request->on_sale == "true" ? 1 : 0;
 
         $id = Event_ticket::create($post)->id;
 
@@ -127,7 +128,7 @@ class EventTicketController extends Controller
             "price" => "required|integer",
             "start_date" => "required",
             "end_date" => "required",
-            "on_sale" => "required|boolean"
+            "on_sale" => "required|in:true,false"
         ]);
 
         if ($validation->fails()) {
@@ -138,6 +139,7 @@ class EventTicketController extends Controller
         }
 
         $put = $request->all();
+        $put["on_sale"] = $request->on_sale == "true" ? 1 : 0;
 
         $event_ticket->update($put);
 
