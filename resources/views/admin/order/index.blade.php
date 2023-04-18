@@ -172,7 +172,7 @@
             }
 
             showOrder(invoice) {
-                window.location=`{{ env("APP_URL") }}/admin/order/${ invoice}/show`
+                window.location=`{{ env("APP_URL") }}/admin/order/${ invoice }/show`
             }
         }
 

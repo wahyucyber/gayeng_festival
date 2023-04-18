@@ -47,7 +47,7 @@
                                     <tbody>
                                         @foreach ($response["data"]["order_items"] as $item)
                                             <tr>
-                                                <td>{{ $item["event"]["title"] }}</td>
+                                                <td>{{ $item["event"] != null ? $item["event"]["title"] : "-" }}</td>
                                                 <td>IDR {{ number_format($item["price"]) }}</td>
                                                 <td>{{ number_format($item["qty"]) }}</td>
                                                 <td style="text-align: right; font-weight: bold;">IDR {{ number_format($item["total"]) }}</td>

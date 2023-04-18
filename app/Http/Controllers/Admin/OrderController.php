@@ -19,13 +19,11 @@ class OrderController extends Controller
         $response = $this->_show_order($invoice);
 
         return view("admin.order.show", compact("invoice", "response"));
-
-        // return $response;
     }
 
     private function _show_order($invoice)
     {
-        $req = Request::create("/api/admin/order/$invoice/show", "GET");
+        $req = Request::create(env("APP_URL") . "/api/admin/order/$invoice/show", "GET");
 
         $req->headers->set("Accept", "application/json");
         $req->headers->set("Authorization", "Bearer " . Session::get("authorization"));
