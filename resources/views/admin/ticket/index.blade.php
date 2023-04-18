@@ -76,9 +76,6 @@
                 super()
 
                 this.tickets
-
-                this._initialize()
-                this.get()
             }
 
             _initialize() {
@@ -145,6 +142,9 @@
         }
 
         var ticket = new Ticket
+
+        ticket._initialize()
+        ticket.get()
 
         $(document).on(`change`, `select#event_id, select#filter_status`, function() {
             ticket.filter()
