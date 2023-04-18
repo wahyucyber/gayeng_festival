@@ -174,8 +174,6 @@
                 class Main extends App {
                     constructor() {
                         super()
-
-                        this.showAccount()
                     }
 
                     logout() {
@@ -218,6 +216,8 @@
                 }
 
                 var main = new Main
+
+                main.showAccount()
 
                 $(document).on(`click`, `.logout-button`, function() {
                     main.logout()
