@@ -19,6 +19,8 @@ class CheckAuth
         if (Session::exists("authorization") && Session::exists("token_expired") && Session::exists("level")) {
             if (Session::get("level") == "Admin") {
                 return redirect()->route("admin.dashboard");
+            }else if (Session::get("level") == "Staff") {
+                return redirect()->route("staff.dashboard");
             }
         }else {
             return $next($request);

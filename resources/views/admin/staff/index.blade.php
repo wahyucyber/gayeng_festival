@@ -167,7 +167,7 @@
                         let error = err.message
 
                         $.each(error, function (index, value) {
-                            $(`#action form#submit .error#erorr-${ index }`).html(`* ${ value }`)
+                            $(`#action form#submit .error#error-${ index }`).html(`* ${ value }`)
                         })
                     }
                 })

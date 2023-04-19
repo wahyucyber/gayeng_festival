@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,4 +79,11 @@ Route::group([
     Route::get("/staff", [StaffController::class, "index"])->name("admin.staff");
 
     Route::get("/profile", [ProfilController::class, "index"])->name("admin.profile");
+});
+
+Route::group([
+    "prefix" => "staff",
+    "middelware" => ["guest"]
+], function() {
+    Route::get("/dashboard", [StaffDashboardController::class, "index"])->name("staff.dashboard");
 });
