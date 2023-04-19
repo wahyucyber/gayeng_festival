@@ -112,6 +112,10 @@ class App {
         return `IDR ${ parseInt(number).toLocaleString("id-ID") }`
     }
 
+    numberFormat(number) {
+        return parseInt(number).toLocaleString("id-ID")
+    }
+
     dateTimeFormat(value) {
         const format = (e) => {
             if (e < 10) {
