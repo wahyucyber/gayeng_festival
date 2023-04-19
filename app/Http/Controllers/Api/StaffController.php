@@ -81,7 +81,20 @@ class StaffController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::where("id", $id)->with("level")->first();
+
+        if ($user == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "User not found."
+            ], 404);
+        }
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => $user
+        ], 200);
     }
 
     /**
