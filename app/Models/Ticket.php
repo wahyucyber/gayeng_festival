@@ -9,10 +9,15 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["order_id", "code", "status"];
+    protected $fillable = ["order_id", "identity_id", "code", "status"];
 
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function identity()
+    {
+        return $this->belongsTo(Identity::class);
     }
 }

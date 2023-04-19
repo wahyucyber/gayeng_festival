@@ -15,4 +15,9 @@ class Identity extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
