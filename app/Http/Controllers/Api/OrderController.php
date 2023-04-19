@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use App\Models\Event_ticket;
 use App\Models\Order;
-use App\Models\Order_item;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Str;
