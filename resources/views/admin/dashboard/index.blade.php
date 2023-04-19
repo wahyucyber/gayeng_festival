@@ -68,7 +68,7 @@
 
                         $(`#event-active`).html(this.numberFormat(data.events))
                         $(`#tickets-sold`).html(this.numberFormat(data.tickets_sold))
-                        $(`#orders`).html(this.numberFormat(data.orders))
+                        $(`#orders`).html(this.rupiah(data.orders))
                     }
                 })
             }
