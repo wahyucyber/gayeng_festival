@@ -131,5 +131,6 @@ Route::group([
         "prefix" => "staff"
     ], function() {
         Route::get("/", [StaffController::class, "index"]);
+        Route::post('/store', [StaffController::class, "store"]);
     });
 });

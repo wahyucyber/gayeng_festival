@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Level;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
 {
@@ -43,7 +46,34 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            "name" => "required|max:255",
+            "email" => "required|max:255|unique:users,email",
+            "password" => "required|max:50"
+        ]);
+
+        if ($validation->fails()) {
+            return Response::json([
+                "status" => false,
+                "message" => $validation->errors()
+            ], 400);
+        }
+
+        $level = Level::where("name", "Staff")->first();
+
+        $post = $request->all();
+        $post["level_id"] = $level["id"];
+        $post["password"] = Hash::make($request->password);
+
+        $id = User::create($post)->id;
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $id
+            ]
+        ], 200);
     }
 
     /**
