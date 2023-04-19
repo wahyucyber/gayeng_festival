@@ -15,4 +15,9 @@ class Order extends Model
     {
         return $this->hasMany(Order_item::class);
     }
+
+    public function event_ticket()
+    {
+        return $this->belongsTo(Event_ticket::class);
+    }
 }

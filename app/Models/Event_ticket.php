@@ -20,4 +20,9 @@ class Event_ticket extends Model
     {
         return $this->belongsTo(Event_ticket_type::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
