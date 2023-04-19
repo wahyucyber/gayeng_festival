@@ -9,12 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id", "invoice_index", "invoice", "pay", "admin_fee", "total_pay", "payment_type", "payment_response", "payment_status"];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ["invoice_index", "invoice", "pay", "admin_fee", "total_pay", "payment_type", "payment_response", "payment_status"];
 
     public function order_items()
     {
