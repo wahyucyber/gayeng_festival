@@ -18,8 +18,6 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
-        $user = User::where("id", Auth::id())->with("level")->first();
-
         $limit = $request->limit ? $request->limit : 10;
 
         $sort = $request->sort;
@@ -29,12 +27,10 @@ class TicketController extends Controller
         $event_id = $request->event_id;
         $status = $request->status;
 
-        $tickets = Ticket::with(["order_item.order" => function($q) use($user) {
-            if ($user["level"]["name"] == "Customer") {
-                $q->where("user_id", Auth::id());
-            }
-        }, "order_item.order.user.level", "order_item.event" => function($q) {
-            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+        $tickets = Ticket::with(["identity", "order.event_ticket" => function($q) {
+            $q->with(["event" => function($q) {
+                $q->with("category")->select(DB::raw("id, category_id, slug, title, start_time, end_time, location, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+            }, "event_ticket_type"]);
         }]);
 
         if ($code) {
