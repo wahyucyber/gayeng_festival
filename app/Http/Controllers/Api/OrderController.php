@@ -34,9 +34,11 @@ class OrderController extends Controller
         $payment_status = $request->payment_status;
         $date = $request->date;
 
-        $orders = Order::with(["user" => function($q) {
-            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
-        }, "user.level"]);
+        $orders = Order::with(["event_ticket" => function($q) {
+            $q->with(["event" => function($q) {
+                $q->with("category")->select(DB::raw("id, category_id, slug, title, start_time, end_time, location, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+            }, "event_ticket_type"]);
+        }]);
 
         if ($invoice) {
             $orders->where("invoice", "LIKE", "%$invoice%");
