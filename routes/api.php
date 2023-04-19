@@ -134,5 +134,6 @@ Route::group([
         Route::get("/{id}/show", [StaffController::class, "show"]);
         Route::post('/store', [StaffController::class, "store"]);
         Route::put('/{id}/update', [StaffController::class, "update"]);
+        Route::delete("/{id}/destroy", [StaffController::class, "destroy"]);
     });
 });

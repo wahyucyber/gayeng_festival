@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
@@ -154,6 +155,27 @@ class StaffController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::where("id", $id)->whereHas("level", function($q) {
+            $q->where("name", "Staff");
+        })->first();
+
+        if ($user == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "User not found."
+            ], 404);
+        }
+
+        Storage::delete(str_replace("storage/", "", $user["picture"]));
+
+        $user->delete();
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $id
+            ]
+        ], 200);
     }
 }
