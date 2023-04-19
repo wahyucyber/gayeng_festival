@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Level;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,7 @@ class StaffController extends Controller
 
         $user = User::whereHas("level", function($q) {
             $q->where("name", "Staff");
-        });
+        })->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
 
         if ($name) {
             $user->where("name", "LIKE", "%$name%");
@@ -84,7 +85,7 @@ class StaffController extends Controller
     {
         $user = User::where("id", $id)->whereHas("level", function($q) {
             $q->where("name", "Staff");
-        })->with("level")->first();
+        })->with("level")->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"))->first();
 
         if ($user == null) {
             return Response::json([
@@ -119,7 +120,7 @@ class StaffController extends Controller
         $validation = Validator::make($request->all(), [
             "name" => "required|max:255",
             "email" => "required|max:255|unique:users,email, " . $id,
-            "password" => "required|max:50"
+            "password" => "nullable|max:50"
         ]);
 
         if ($validation->fails()) {

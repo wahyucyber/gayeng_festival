@@ -52,7 +52,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ request()->routeIs("admin.report*") ? "active" : "" }}" href="{{ route("admin.report") }}"><i class="ri-survey-line"></i> <span data-key="t-reports">Laporan</span>
+                <a class="nav-link menu-link {{ request()->routeIs("admin.report") ? "active" : "" }}" href="{{ route("admin.report") }}"><i class="ri-survey-line"></i> <span data-key="t-reports">Laporan</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ request()->routeIs("admin.staff") ? "active" : "" }}" href="{{ route("admin.staff") }}"><i class="ri-group-2-line"></i> <span data-key="t-reports">Staff</span>
                 </a>
             </li>
         </ul>

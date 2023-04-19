@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProfilController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,8 @@ Route::group([
     });
 
     Route::get("/report", [ReportController::class, "index"])->name("admin.report");
+
+    Route::get("/staff", [StaffController::class, "index"])->name("admin.staff");
 
     Route::get("/profile", [ProfilController::class, "index"])->name("admin.profile");
 });
