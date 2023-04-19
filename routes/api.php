@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\EventTicketController;
 use App\Http\Controllers\Api\EventTicketTypeController;
@@ -57,6 +58,8 @@ Route::group([
     "prefix" => "admin",
     "middleware" => ["auth:sanctum", "abilities:Admin"]
 ], function() {
+    Route::get("/dashboard", [DashboardController::class, "index"]);
+
     Route::group([
         "prefix" => "event"
     ], function() {
