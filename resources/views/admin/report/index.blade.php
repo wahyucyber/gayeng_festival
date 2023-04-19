@@ -20,7 +20,9 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="filter_status" class="form-select status">
                                     <option value="">Pilih</option>
-                                    <option value="pending">pending</option>
+                                    <option value="cancel">Cancel</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="expire">Expire</option>
                                     <option value="settlement">settlement</option>
                                 </select>
                             </div>

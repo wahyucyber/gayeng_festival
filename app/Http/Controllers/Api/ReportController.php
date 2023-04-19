@@ -58,19 +58,9 @@ class ReportController extends Controller
 
     public function countTotalPay(Request $request)
     {
-        $invoice = $request->search;
-        $payment_status = $request->payment_status;
         $date = $request->date;
 
-        $orders = Order::whereNotNull("id");
-
-        if ($invoice) {
-            $orders->where("invoice", "LIKE", "%$invoice%");
-        }
-
-        if ($payment_status) {
-            $orders->where("payment_status", $payment_status);
-        }
+        $orders = Order::where("payment_status", "settlement");
 
         if ($date) {
             $explode_date = explode(" to ", $date);
