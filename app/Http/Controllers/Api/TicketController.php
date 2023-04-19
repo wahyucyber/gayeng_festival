@@ -69,7 +69,9 @@ class TicketController extends Controller
             ], 400);
         }
 
-        $ticket = Ticket::where("code", $request->code)->where("status", "pending")->with(["identity", "order.event_ticket" => function($q) {
+        $ticket = Ticket::where("code", $request->code)->where("status", "pending")->whereHas("order", function($q) {
+            $q->where("payment_status", "settlement");
+        })->with(["identity", "order.event_ticket" => function($q) {
             $q->with(["event" => function($q) {
                 $q->with("category")->select(DB::raw("id, category_id, slug, title, start_time, end_time, location, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
             }, "event_ticket_type"]);
