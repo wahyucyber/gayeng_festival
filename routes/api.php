@@ -55,6 +55,12 @@ Route::group([
 });
 
 Route::group([
+    "prefix" => "order"
+], function() {
+    Route::post("/store", [OrderController::class, "store"]);
+});
+
+Route::group([
     "prefix" => "admin",
     "middleware" => ["auth:sanctum", "abilities:Admin"]
 ], function() {
@@ -120,34 +126,34 @@ Route::group([
     Route::put('/update_profile', [ProfilController::class, "update"]);
 });
 
-Route::group([
-    "prefix" => "user",
-    "middleware" => ["auth:sanctum", "abilities:Customer"]
-], function() {
-    Route::group([
-        "prefix" => "cart"
-    ], function() {
-        Route::get('/', [CartController::class, "index"]);
-        Route::get('/{id}/show', [CartController::class, "show"]);
-        Route::post('/store', [CartController::class, "store"]);
-        Route::put('/{id}/update', [CartController::class, "update"]);
-        Route::delete('/{id}/destroy', [CartController::class, "destroy"]);
-    });
+// Route::group([
+//     "prefix" => "user",
+//     "middleware" => ["auth:sanctum", "abilities:Customer"]
+// ], function() {
+//     Route::group([
+//         "prefix" => "cart"
+//     ], function() {
+//         Route::get('/', [CartController::class, "index"]);
+//         Route::get('/{id}/show', [CartController::class, "show"]);
+//         Route::post('/store', [CartController::class, "store"]);
+//         Route::put('/{id}/update', [CartController::class, "update"]);
+//         Route::delete('/{id}/destroy', [CartController::class, "destroy"]);
+//     });
 
-    Route::group([
-        "prefix" => "order"
-    ], function() {
-        Route::get("/", [OrderController::class, "index"]);
-        Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*");
-        Route::post("/store", [OrderController::class, "store"]);
-    });
+//     Route::group([
+//         "prefix" => "order"
+//     ], function() {
+//         Route::get("/", [OrderController::class, "index"]);
+//         Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", ".*");
+//         Route::post("/store", [OrderController::class, "store"]);
+//     });
 
-    Route::group([
-        "prefix" => "ticket"
-    ], function() {
-        Route::get("/", [TicketController::class, "index"]);
-        Route::get("/{code}/show", [TicketController::class, "show"]);
-    });
+//     Route::group([
+//         "prefix" => "ticket"
+//     ], function() {
+//         Route::get("/", [TicketController::class, "index"]);
+//         Route::get("/{code}/show", [TicketController::class, "show"]);
+//     });
 
-    Route::put('/update_profile', [ProfilController::class, "update"]);
-});
+//     Route::put('/update_profile', [ProfilController::class, "update"]);
+// });

@@ -75,7 +75,17 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            "payment_type" => "required|in:bri_va,bca_va,bni_va,permata_va,indomaret,alfamart"
+            "payment_type" => "required|in:bri_va,bca_va,bni_va,permata_va,indomaret,alfamart",
+            "name" => "required|max:255",
+            "identity_id" => "required|exists:identities,id",
+            "identity" => "required|max:255",
+            "email" => "required|max:255|email",
+            "whatsapp" => "required",
+            "tickets.*.name" => "required|max:255",
+            "tickets.*.identity_id" => "required|exists:identities,id",
+            "tickets.*.identity" => "required|max:255",
+            "tickets.*.email" => "required|max:255|email",
+            "tickets.*.whatsapp" => "required",
         ]);
 
         if ($validation->fails()) {
@@ -188,9 +198,9 @@ class OrderController extends Controller
             ];
         }
 
-        Order_item::insert($order_items);
+        // Order_item::insert($order_items);
 
-        Cart::where("user_id", Auth::id())->delete();
+        // Cart::where("user_id", Auth::id())->delete();
 
         return Response::json([
             "status" => true,
@@ -220,23 +230,23 @@ class OrderController extends Controller
         ]);
 
         if ($req["transaction_status"] == "settlement") {
-            $order_item = Order_item::where("order_id", $order["id"])->get();
+            // $order_item = Order_item::where("order_id", $order["id"])->get();
 
-            $tickets = [];
-            $tickets_index = 0;
+            // $tickets = [];
+            // $tickets_index = 0;
 
-            foreach ($order_item as $key) {
-                for ($i=0; $i < $key["qty"]; $i++) {
-                    $tickets[$tickets_index++] = [
-                        "order_item_id" => $key["id"],
-                        "code" => date("Ymd") . Str::random(5),
-                        "created_at" => now(),
-                        "updated_at" => now()
-                    ];
-                }
-            }
+            // foreach ($order_item as $key) {
+            //     for ($i=0; $i < $key["qty"]; $i++) {
+            //         $tickets[$tickets_index++] = [
+            //             "order_item_id" => $key["id"],
+            //             "code" => date("Ymd") . Str::random(5),
+            //             "created_at" => now(),
+            //             "updated_at" => now()
+            //         ];
+            //     }
+            // }
 
-            Ticket::insert($tickets);
+            // Ticket::insert($tickets);
         }
 
         return Response::json([
