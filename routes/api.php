@@ -139,7 +139,8 @@ Route::group([
 });
 
 Route::group([
-    "prefix" => "staff"
+    "prefix" => "staff",
+    "middleware" => ["auth:sanctum", "abilities:Staff"]
 ], function() {
     Route::get("/dashboard", [DashboardController::class, "index"]);
 
@@ -151,4 +152,6 @@ Route::group([
         Route::get("/", [TicketController::class, "index"]);
         Route::post("/confirm", [TicketController::class, "confirmTicket"]);
     });
+
+    Route::put('/update_profile', [ProfilController::class, "update"]);
 });

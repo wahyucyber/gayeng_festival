@@ -206,7 +206,7 @@
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <!-- item-->
                                         <h6 class="dropdown-header">Selamat Datang ${ data.name }!</h6>
-                                        <a class="dropdown-item" href="{{ route("admin.profile") }}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profil</span></a>
+                                        <a class="dropdown-item" href="{{ Session::get("level") == "Admin" ? route("admin.profile") : route("staff.profile") }}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profil</span></a>
                                         <a class="dropdown-item logout-button" href="javascript:;"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                                     </div>
                                 `)

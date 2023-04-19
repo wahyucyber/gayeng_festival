@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProfilController extends Controller
@@ -17,23 +18,12 @@ class ProfilController extends Controller
     {
         $user = User::where("id", Auth::id())->with("level")->first();
 
-        if ($user["level"]["name"] == "Admin") {
-            $validation = Validator::make($request->all(), [
-                "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
-                "name" => "required|max:255",
-                "email" => "required|unique:users,email," . $user["id"],
-                "password" => "nullable|max:50"
-            ]);
-        }else {
-            $validation = Validator::make($request->all(), [
-                "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
-                "nik" => "required|max:255",
-                "whatsapp" => "required|max:255",
-                "name" => "required|max:255",
-                "email" => "required|unique:users,email," . $user["id"],
-                "password" => "nullable|max:50"
-            ]);
-        }
+        $validation = Validator::make($request->all(), [
+            "picture" => "nullable|max:2048|mimes:png,jpg,jpeg",
+            "name" => "required|max:255",
+            "email" => "required|unique:users,email," . $user["id"],
+            "password" => "nullable|max:50"
+        ]);
 
         if ($validation->fails()) {
             return Response::json([
@@ -47,6 +37,7 @@ class ProfilController extends Controller
         unset($put["password"]);
 
         if ($request->file("picture")) {
+            Storage::delete(str_replace("storage/", "", $user["picture"]));
             $put["picture"] = "storage/" . $request->file("picture")->storeAs("users", date("Y-m-d H:i:s") . Str::random() . "." . $request->file("picture")->getClientOriginalExtension(), "public");
         }
 
