@@ -1,9 +1,6 @@
 
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg">
-
-
-<!-- Mirrored from themesbrand.com/velzon/html/default/auth-signin-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Apr 2022 12:54:23 GMT -->
 <head>
 
         <meta charset="utf-8" />
@@ -13,6 +10,7 @@
         <meta content="Themesbrand" name="author" />
         <meta content="{{ env("APP_URL") }}" name="baseUrl">
         <meta content="Bearer {{ Session::get("authorization") }}" name="authorization">
+        <meta content="{{ Session::get("level") }}" name="level">
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{ env("APP_URL") }}/assets/images/favicon.ico">
 
@@ -236,7 +234,4 @@
             </script>
         @endif
     </body>
-
-
-<!-- Mirrored from themesbrand.com/velzon/html/default/auth-signin-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Apr 2022 12:54:24 GMT -->
 </html>

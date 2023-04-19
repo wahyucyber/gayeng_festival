@@ -41,7 +41,7 @@ Route::delete("/logout", [AuthController::class, "logout"])->name("auth.logout")
 
 Route::group([
     "prefix" => "admin",
-    "middleware" => ["guest"]
+    "middleware" => ["guest", "admin"]
 ], function() {
     Route::get("/", [DashboardController::class, "index"])->name("admin.dashboard");
 
