@@ -107,6 +107,13 @@ class OrderController extends Controller
             ], 404);
         }
 
+        if (count($request->tickets) > $event_ticket["amount_per_transaction"]) {
+            return Response::json([
+                "status" => false,
+                "message" => "Amount per transaction is " . $event_ticket["amount_per_transaction"]
+            ], 200);
+        }
+
         $dateNow = now();
 
         $latest_order = Order::whereDate("created_at", $dateNow)->orderBy("invoice_index", "DESC")->first();
