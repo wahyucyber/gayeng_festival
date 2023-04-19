@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Event_ticket;
 use App\Models\Order;
 use App\Models\Order_item;
 use App\Models\Ticket;
@@ -75,12 +76,14 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            "payment_type" => "required|in:bri_va,bca_va,bni_va,permata_va,indomaret,alfamart",
+            "event_ticket_id" => "required|exists:event_tickets,id",
+            "payment_type" => "required|in:bri_va,bca_va,bni_va,permata_va,indomaret,alfamart,gopay",
             "name" => "required|max:255",
             "identity_id" => "required|exists:identities,id",
             "identity" => "required|max:255",
             "email" => "required|max:255|email",
             "whatsapp" => "required",
+            "tickets" => "required",
             "tickets.*.name" => "required|max:255",
             "tickets.*.identity_id" => "required|exists:identities,id",
             "tickets.*.identity" => "required|max:255",
@@ -95,13 +98,13 @@ class OrderController extends Controller
             ], 400);
         }
 
-        $carts = Cart::where("user_id", Auth::id())->with("event");
+        $event_ticket = Event_ticket::where("id", $request->event_ticket_id)->where("start_date", "<=", now())->where("end_date", ">=", now())->first();
 
-        if ($carts->count() == 0) {
+        if ($event_ticket == null) {
             return Response::json([
                 "status" => false,
-                "message" => "Cart is empty."
-            ], 400);
+                "message" => "Ticket not found."
+            ], 404);
         }
 
         $dateNow = now();
@@ -111,7 +114,12 @@ class OrderController extends Controller
         $pay = 0;
 
         $order = [];
-        $order["user_id"] = Auth::id();
+        $order["event_ticket_id"] = $event_ticket["id"];
+        $order["identity_id"] = $request->identity_id;
+        $order["name"] = $request->name;
+        $order["identity"] = "$request->identity";
+        $order["email"] = $request->email;
+        $order["whatsapp"] = $request->whatsapp;
 
         $invoice_index = 1;
 
@@ -119,17 +127,14 @@ class OrderController extends Controller
             $invoice_index = $latest_order["invoice_index"] + 1;
         }
 
-        foreach ($carts->get() as $key) {
-            $pay = $key["qty"] * $key["event"]["price"];
-        }
+        $pay = $event_ticket["price"] * count($request->tickets);
 
         $order["invoice_index"] = $invoice_index;
 
         $order["invoice"] = "INV-" . date("Y/m/d-h-i-s") . ".00" . $invoice_index;
+        $order["price"] = $event_ticket["price"];
         $order["pay"] = $pay;
         $order["payment_type"] = $request->payment_type;
-
-        $user = User::where("id", Auth::id())->first();
 
         Config::$serverKey=config("services.midtrans.server_key");
         Config::$clientKey=config("services.midtrans.client_key");
@@ -154,10 +159,10 @@ class OrderController extends Controller
 
             $order["admin_fee"] = 5000;
         }
-        // else {
-        //     $charge["payment_type"] = "qris";
-        //     $charge["qris_action"] = "generate";
-        // }
+        else {
+            $charge["payment_type"] = "gopay";
+            $order["admin_fee"] = 1500;
+        }
 
         $order["total_pay"] = $order["pay"] + $order["admin_fee"];
 
@@ -168,9 +173,9 @@ class OrderController extends Controller
 
         $customer_detail = [
             "first_name" => "Pak/Ibu",
-            "last_name" => $user["name"],
-            "email" => $user["email"],
-            "phone" => "+62" . str_replace("+62", "", $user["phone"])
+            "last_name" => $request->name,
+            "email" => $request->email,
+            "phone" => "+62" . str_replace("+62", "", $request->whatsapp)
         ];
 
         $charge["transaction_details"] = $transaction_details;
@@ -183,24 +188,24 @@ class OrderController extends Controller
 
         $id = Order::create($order)->id;
 
-        $order_items = [];
-        $order_items_index = 0;
+        $tickets = [];
+        $ticket_index = 0;
 
-        foreach ($carts->get() as $key) {
-            $order_items[$order_items_index++] = [
+        foreach ($request->tickets as $key) {
+            $tickets[$ticket_index++] = [
                 "order_id" => $id,
-                "event_id" => $key["event_id"],
-                "qty" => $key["qty"],
-                "price" => $key["event"]["price"],
-                "total" => $key["qty"] * $key["event"]["price"],
+                "identity_id" => $key["identity_id"],
+                "code" => date("Ymd") . Str::random(5),
+                "name" => $key["name"],
+                "identity" => $key["identity"],
+                "email" => $key["email"],
+                "whatsapp" => $key["whatsapp"],
                 "created_at" => now(),
                 "updated_at" => now()
             ];
         }
 
-        // Order_item::insert($order_items);
-
-        // Cart::where("user_id", Auth::id())->delete();
+        Ticket::insert($tickets);
 
         return Response::json([
             "status" => true,
@@ -228,26 +233,6 @@ class OrderController extends Controller
             "payment_status" => $req['transaction_status'],
             "payment_response" => json_encode($req)
         ]);
-
-        if ($req["transaction_status"] == "settlement") {
-            // $order_item = Order_item::where("order_id", $order["id"])->get();
-
-            // $tickets = [];
-            // $tickets_index = 0;
-
-            // foreach ($order_item as $key) {
-            //     for ($i=0; $i < $key["qty"]; $i++) {
-            //         $tickets[$tickets_index++] = [
-            //             "order_item_id" => $key["id"],
-            //             "code" => date("Ymd") . Str::random(5),
-            //             "created_at" => now(),
-            //             "updated_at" => now()
-            //         ];
-            //     }
-            // }
-
-            // Ticket::insert($tickets);
-        }
 
         return Response::json([
             "status" => true,
