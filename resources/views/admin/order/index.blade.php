@@ -15,7 +15,6 @@
                     <div>* Status <span class="badge bg-warning">Pending</span> adalah transaksi masih menunggu pembayaran.</div>
                     <div>* Status <span class="badge bg-danger">Expire</span> adalah transaksi telah melewati batas waktu maksimal pembayaran.</div>
                     <div>* Status <span class="badge bg-danger">Cancel</span> adalah transaksi telah dibatalkan.</div>
-                    <div>* Status <span class="badge bg-danger">Refund</span> adalah transaksi dikembalikan.</div>
                 </div>
             </div>
         </div>
@@ -157,7 +156,7 @@
                             }
                         },
                         {
-                            data: `user.name`,
+                            data: `name`,
                             sort: false
                         }
                     ]
