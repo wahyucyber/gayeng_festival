@@ -9,10 +9,5 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["order_item_id", "code", "status"];
-
-    public function order_item()
-    {
-        return $this->belongsTo(Order_item::class);
-    }
+    protected $fillable = ["code", "status"];
 }
