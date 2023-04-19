@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["event_ticket_id", "identity_id", "invoice_index", "invoice", "pay", "admin_fee", "total_pay", "payment_type", "payment_response", "payment_status", "name"];
+    protected $fillable = ["event_ticket_id", "identity_id", "invoice_index", "invoice", "pay", "admin_fee", "total_pay", "payment_type", "payment_response", "payment_status", "name", "indentity"];
 
     public function order_items()
     {
