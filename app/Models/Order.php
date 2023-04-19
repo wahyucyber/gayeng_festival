@@ -11,11 +11,6 @@ class Order extends Model
 
     protected $fillable = ["event_ticket_id", "identity_id", "invoice_index", "invoice", "pay", "admin_fee", "total_pay", "payment_type", "payment_response", "payment_status", "name", "indentity", "email", "whatsapp"];
 
-    public function order_items()
-    {
-        return $this->hasMany(Order_item::class);
-    }
-
     public function event_ticket()
     {
         return $this->belongsTo(Event_ticket::class);
@@ -24,5 +19,10 @@ class Order extends Model
     public function identity()
     {
         return $this->belongsTo(Identity::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }
