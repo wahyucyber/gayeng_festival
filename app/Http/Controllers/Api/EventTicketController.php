@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\Event_ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,15 @@ class EventTicketController extends Controller
             return Response::json([
                 "status" => false,
                 "message" => $validation->errors()
+            ], 400);
+        }
+
+        $event = Event::where("id", $request->event_id)->first();
+
+        if ($request->start_date > $event["start_time"] || $request->end_date > $event["end_time"]) {
+            return Response::json([
+                "status" => false,
+                "message" => "Tanggal penjualan tidak boleh lebih tanggal acara."
             ], 400);
         }
 
@@ -135,6 +145,15 @@ class EventTicketController extends Controller
             return Response::json([
                 "status" => false,
                 "message" => $validation->errors()
+            ], 400);
+        }
+
+        $event = Event::where("id", $request->event_id)->first();
+
+        if ($request->start_date > $event["start_time"] || $request->end_date > $event["end_time"]) {
+            return Response::json([
+                "status" => false,
+                "message" => "Tanggal penjualan tidak boleh lebih tanggal acara."
             ], 400);
         }
 
