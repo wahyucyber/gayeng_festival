@@ -137,3 +137,16 @@ Route::group([
         Route::delete("/{id}/destroy", [StaffController::class, "destroy"]);
     });
 });
+
+Route::group([
+    "prefix" => "staff"
+], function() {
+    Route::get("/dashboard", [DashboardController::class, "index"]);
+
+    Route::group([
+        "prefix" => "ticket"
+    ], function() {
+        Route::get("/", [TicketController::class, "index"]);
+        Route::post("/confirm", [TicketController::class, "confirmTicket"]);
+    });
+});
