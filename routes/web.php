@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
+use App\Http\Controllers\Staff\TicketController as StaffTicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,4 +87,11 @@ Route::group([
     "middelware" => ["guest"]
 ], function() {
     Route::get("/dashboard", [StaffDashboardController::class, "index"])->name("staff.dashboard");
+
+    Route::group([
+        "prefix" => "staff"
+    ], function() {
+        Route::get("/", [StaffTicketController::class, "index"])->name("staff.ticket");
+        Route::get("/scan", [StaffTicketController::class, 'scan'])->name("staff.ticket.scan");
+    });
 });

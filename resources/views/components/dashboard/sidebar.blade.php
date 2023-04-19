@@ -67,6 +67,10 @@
                     <a class="nav-link menu-link {{ request()->routeIs("staff.dashboard") ? "active" : "" }}" href="{{ route("staff.dashboard") }}"><i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->routeIs("staff.ticket*") ? "active" : "" }}" href="{{ route("staff.ticket") }}"><i class="ri-ticket-2-line"></i> <span data-key="t-tickets">Tiket</span>
+                    </a>
+                </li>
             @endif
         </ul>
     </div>

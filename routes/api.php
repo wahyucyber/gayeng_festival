@@ -143,6 +143,8 @@ Route::group([
 ], function() {
     Route::get("/dashboard", [DashboardController::class, "index"]);
 
+    Route::get("/event/select2", [EventController::class, "indexSelect2"]);
+
     Route::group([
         "prefix" => "ticket"
     ], function() {
