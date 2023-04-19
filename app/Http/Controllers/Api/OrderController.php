@@ -124,7 +124,7 @@ class OrderController extends Controller
         $order["event_ticket_id"] = $event_ticket["id"];
         $order["identity_id"] = $request->identity_id;
         $order["name"] = $request->name;
-        $order["identity"] = "$request->identity";
+        $order["identity_number"] = "$request->identity";
         $order["email"] = $request->email;
         $order["whatsapp"] = $request->whatsapp;
 
@@ -204,7 +204,7 @@ class OrderController extends Controller
                 "identity_id" => $key["identity_id"],
                 "code" => date("Ymd") . Str::random(5),
                 "name" => $key["name"],
-                "identity" => $key["identity"],
+                "identity_number" => $key["identity"],
                 "email" => $key["email"],
                 "whatsapp" => $key["whatsapp"],
                 "created_at" => now(),
@@ -255,13 +255,11 @@ class OrderController extends Controller
      */
     public function show($invoice)
     {
-        $user = User::where("id", Auth::id())->with("level")->first();
-
         $order = Order::where("invoice", $invoice)->with(["event_ticket" => function($q) {
             $q->with(["event" => function($q) {
                 $q->with("category")->select(DB::raw("id, category_id, slug, title, start_time, end_time, location, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
             }, "event_ticket_type"]);
-        }, "tickets.identity"])->first();
+        }, "tickets.identity", "identity"])->first();
 
         if ($order == null) {
             return Response::json([
