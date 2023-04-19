@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfilController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\TicketController;
 use Illuminate\Support\Facades\Route;
 
@@ -125,4 +126,10 @@ Route::group([
     });
 
     Route::put('/update_profile', [ProfilController::class, "update"]);
+
+    Route::group([
+        "prefix" => "staff"
+    ], function() {
+        Route::get("/", [StaffController::class, "index"]);
+    });
 });
