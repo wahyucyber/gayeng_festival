@@ -133,5 +133,6 @@ Route::group([
         Route::get("/", [StaffController::class, "index"]);
         Route::get("/{id}/show", [StaffController::class, "show"]);
         Route::post('/store', [StaffController::class, "store"]);
+        Route::put('/{id}/update', [StaffController::class, "update"]);
     });
 });

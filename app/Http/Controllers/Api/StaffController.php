@@ -81,7 +81,9 @@ class StaffController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::where("id", $id)->with("level")->first();
+        $user = User::where("id", $id)->whereHas("level", function($q) {
+            $q->where("name", "Staff");
+        })->with("level")->first();
 
         if ($user == null) {
             return Response::json([
@@ -102,7 +104,49 @@ class StaffController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::where("id", $id)->whereHas("level", function($q) {
+            $q->where("name", "Staff");
+        })->first();
+
+        if ($user == null) {
+            return Response::json([
+                "status" => false,
+                "message" => "User not found."
+            ], 404);
+        }
+
+        $validation = Validator::make($request->all(), [
+            "name" => "required|max:255",
+            "email" => "required|max:255|unique:users,email, " . $id,
+            "password" => "required|max:50"
+        ]);
+
+        if ($validation->fails()) {
+            return Response::json([
+                "status" => false,
+                "message" => $validation->errors()
+            ], 400);
+        }
+
+        $level = Level::where("name", "Staff")->first();
+
+        $put = $request->all();
+        $put["level_id"] = $level["id"];
+        unset($put["password"]);
+
+        if ($request->password) {
+            $put["password"] = Hash::make($request->password);
+        }
+
+        $user->update($put);
+
+        return Response::json([
+            "status" => true,
+            "message" => "success.",
+            "data" => [
+                "id" => (int) $id
+            ]
+        ], 200);
     }
 
     /**
