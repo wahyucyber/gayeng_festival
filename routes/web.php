@@ -87,7 +87,7 @@ Route::group([
     "prefix" => "staff",
     "middelware" => ["guest"]
 ], function() {
-    Route::get("/dashboard", [StaffDashboardController::class, "index"])->name("staff.dashboard");
+    Route::get("/", [StaffDashboardController::class, "index"])->name("staff.dashboard");
 
     Route::group([
         "prefix" => "staff"
