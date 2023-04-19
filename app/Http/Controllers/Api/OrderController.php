@@ -250,15 +250,11 @@ class OrderController extends Controller
     {
         $user = User::where("id", Auth::id())->with("level")->first();
 
-        $order = Order::where("invoice", $invoice)->with(["user" => function($q) {
-            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/default-user.png')) AS picture"));
-        }, "user.level", "order_items.event" => function($q) {
-            $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
-        }, "order_items.tickets"])->first();
-
-        if ($user["level"]["name"] == "Customer") {
-            $order->where("user_id", Auth::id());
-        }
+        $order = Order::where("invoice", $invoice)->with(["event_ticket" => function($q) {
+            $q->with(["event" => function($q) {
+                $q->with("category")->select(DB::raw("id, category_id, slug, title, start_time, end_time, location, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
+            }, "event_ticket_type"]);
+        }, "tickets.identity"])->first();
 
         if ($order == null) {
             return Response::json([

@@ -58,6 +58,7 @@ Route::group([
     "prefix" => "order"
 ], function() {
     Route::post("/store", [OrderController::class, "store"]);
+    Route::get("/{invoice}/show", [OrderController::class, "show"])->where("invoice", '.*');
 });
 
 Route::group([
