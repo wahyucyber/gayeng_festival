@@ -32,8 +32,6 @@
         class Ticket extends App {
             constructor() {
                 super()
-
-                this.active_camera()
             }
 
             active_camera() {
@@ -49,29 +47,43 @@
                         url: `/api/admin/ticket/confirm`,
                         method: `POST`,
                         data: {
-                            'code': content
+                            // 'code': content
+                            'code': '20230419YnZRc'
                         },
                         success: e => {
                             let data = e.data
 
+                            let event = `-`
+
+                            if (data.order != null && data.order.event_ticket != null && data.order.event_ticket.event != null) {
+                                event = data.order.event_ticket.event.title
+                            }
+
                             $(`#response`).html(`
                                 <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Acara</label>
-                                            <input type="text" class="form-control" value="${ data.order_item.event != null ? data.order_item.event.title : '-' }" />
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Kode</label>
-                                            <input type="text" class="form-control" value="${ data.code }" />
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Status</label>
-                                            <input type="text" class="form-control" value="${ data.status }" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="alert alert-success">Data berhasil diperbarui!</div>
-                                        </div>
+                                    <div class="col-lg-6 mb-3 d-flex gap-2 flex-column">
+                                        <small class="text-muted">Acara</small>
+                                        <h6 class="text-black text-bold">${ event }</h6>
+                                    </div>
+                                    <div class="col-lg-6 mb-3 d-flex gap-2 flex-column">
+                                        <small class="text-muted">Kode</small>
+                                        <h6 class="text-black text-bold">${ data.code }</h6>
+                                    </div>
+                                    <div class="col-lg-6 mb-3 d-flex gap-2 flex-column">
+                                        <small class="text-muted">Nama</small>
+                                        <h6 class="text-black text-bold">${ data.name }</h6>
+                                    </div>
+                                    <div class="col-lg-6 mb-3 d-flex gap-2 flex-column">
+                                        <small class="text-muted">Identitas (${ data.identity != null ? data.identity.name : '-' })</small>
+                                        <h6 class="text-black text-bold">${ data.identity_number }</h6>
+                                    </div>
+                                    <div class="col-lg-12 mb-3 d-flex gap-2 flex-column">
+                                        <small class="text-muted">Email</small>
+                                        <h6 class="text-black text-bold">${ data.email }</h6>
+                                    </div>
+                                    <div class="col-lg-12 mb-3 d-flex gap-2 flex-column">
+                                        <small class="text-muted">Whatsapp</small>
+                                        <h6 class="text-black text-bold">${ data.whatsapp }</h6>
                                     </div>
                                 </div>
                             `)
@@ -88,7 +100,7 @@
                     if (cameras.length > 0) {
                         var backCamera = cameras.find(function(camera) { return camera.name.indexOf('back') !== -1; })
                         if (backCamera) {
-                            scanner.start(backCamera)
+                            scanner.start(backCamera,  { mirror: true })
                         } else {
                             scanner.start(cameras[0])
                         }
@@ -100,5 +112,7 @@
         }
 
         var ticket = new Ticket
+
+        ticket.active_camera()
     </script>
 @endsection
