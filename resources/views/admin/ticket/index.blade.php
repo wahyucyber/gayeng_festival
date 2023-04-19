@@ -47,7 +47,7 @@
                                     <th style="width: 20%;">Acara</th>
                                     <th style="width: 20%;">Code</th>
                                     <th style="width: 20%;">Status</th>
-                                    <th style="width: 20%;">Pengguna</th>
+                                    <th style="width: 20%;">Nama</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -57,7 +57,7 @@
                                         <th>Acara</th>
                                         <th>Code</th>
                                         <th>Status</th>
-                                        <th>Pengguna</th>
+                                        <th>Nama</th>
                                     </tr>
                                 </thead>
                             </tfoot>
@@ -107,7 +107,13 @@
                             data: null,
                             sort: false,
                             html: e => {
-                                return e.order_item.event != null ? e.order_item.event.title : `-`
+                                let event = `-`
+
+                                if (e.order != null && e.order.event_ticket != null && e.order.event_ticket.event != null) {
+                                    event = e.order.event_ticket.event.title
+                                }
+
+                                return event
                             }
                         },
                         {
@@ -127,7 +133,7 @@
                             }
                         },
                         {
-                            data: `order_item.order.user.name`
+                            data: `name`
                         }
                     ]
                 })
