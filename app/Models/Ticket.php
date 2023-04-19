@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["order_id", "identity_id", "code", "status", "name"];
+    protected $fillable = ["order_id", "identity_id", "code", "status", "name", "identity"];
 
     public function order()
     {
