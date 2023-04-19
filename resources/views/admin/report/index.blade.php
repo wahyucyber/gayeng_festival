@@ -149,7 +149,7 @@
                             }
                         },
                         {
-                            data: `user.name`,
+                            data: `name`,
                             sort: false
                         }
                     ]
