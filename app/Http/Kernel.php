@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\Guest;
+use App\Http\Middleware\Staff;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'guest' => Guest::class,
         'check_auth' => CheckAuth::class,
         'admin' => Admin::class,
+        'staff' => Staff::class,
     ];
 }
