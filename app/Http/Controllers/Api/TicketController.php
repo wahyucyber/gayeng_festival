@@ -38,8 +38,8 @@ class TicketController extends Controller
         }
 
         if ($event_id) {
-            $tickets->whereHas("order_item", function($q) use($event_id) {
-                $q->where("event_id", $event_id);
+            $tickets->whereHas("order.event_ticket.event", function($q) use($event_id) {
+                $q->where("id", $event_id);
             });
         }
 
