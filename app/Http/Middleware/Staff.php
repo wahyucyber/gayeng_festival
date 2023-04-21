@@ -16,7 +16,7 @@ class Staff
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Session::get("level") == "Staff") {
+        if (strtolower(Session::get("level")) == "staff") {
             return $next($request);
         }else {
             return redirect()->route("auth.login");
