@@ -23,10 +23,15 @@ class EventTicketController extends Controller
         $dir = $request->dir;
 
         $name = $request->search;
+        $event_id = $request->event_id;
 
         $event_tickets = Event_ticket::with(["event_ticket_type", "event" => function($q) {
             $q->select(DB::raw("*, CONCAT('" . env("APP_URL") . "/', COALESCE(picture, 'assets/images/notfound.jpg')) AS picture"));
         }]);
+
+        if ($event_id) {
+            $event_tickets->where("event_id", $event_id);
+        }
 
         if ($name) {
             $event_tickets->where("name", "LIKE", "%$name%");

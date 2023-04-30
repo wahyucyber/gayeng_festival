@@ -151,7 +151,7 @@
                     success: e => {
                         let data = e.data
 
-                        this.event_id = data.id
+                        event.event_id = data.id
 
                         let output = `
                             <div class="card">
@@ -189,6 +189,8 @@
                         `
 
                         $(`#event-show`).html(output)
+
+                        event.ticket_get(`/api/admin/event/ticket?page=1`, data.id)
                     }
                 })
             }
@@ -210,9 +212,9 @@
                 })
             }
 
-            ticket_get(url = `/api/admin/event/ticket?page=1`) {
+            ticket_get(url = `/api/admin/event/ticket?page=1`, event_id) {
                 this.api({
-                    url: `${ url }&search=${ $(`form#filter [name=search]`).val() }`,
+                    url: `${ url }&search=${ $(`form#filter [name=search]`).val() }&event_id=${ event_id }`,
                     success: e => {
                         let data = e.data
                         let next_page_url = e.next_page_url
@@ -280,7 +282,7 @@
                         if (next_page_url != null) {
                             output += `
                                 <div class="col-lg-12 mt-3 d-flex justify-content-center" id="show-more">
-                                    <button type="button" class="btn btn-primary" data-next_page_url="${ next_page_url }">Lihat Selengkapnya</button>
+                                    <button type="button" class="btn btn-primary" data-next_page_url="${ next_page_url }" data-event_id="${ event_id }">Lihat Selengkapnya</button>
                                 </div>
                             `
                         }
@@ -348,7 +350,7 @@
 
                         $(`#action-ticket form#submit [data-bs-dismiss=modal]`).trigger(`click`)
 
-                        this.ticket_get()
+                        this.show()
                     },
                     error: err => {
                         let error = err.message
@@ -401,7 +403,6 @@
 
         event._initialize()
         event.show()
-        event.ticket_get()
         event.ticket_type_get()
 
         $(document).on(`submit`, `#action-ticket form#submit`, function(e) {
@@ -417,8 +418,9 @@
 
         $(document).on(`click`, `#show-tickets #show-more button`, function() {
             let next_page_url = $(this).data(`next_page_url`)
+            let event_id = $(this).data(`event_id`)
 
-            event.ticket_get(next_page_url)
+            event.ticket_get(next_page_url, event_id)
         })
 
         $(document).on(`click`, `#show-tickets #update`, function() {
